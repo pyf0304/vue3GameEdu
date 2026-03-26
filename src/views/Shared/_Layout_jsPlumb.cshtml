@@ -1,0 +1,97 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <title>@ViewData["Title"]</title>
+
+
+
+    @*<environment include="Development">
+            <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+            <link rel="stylesheet" href="~/css/site.css" />
+        </environment>
+        <environment exclude="Development">
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+                  asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+                  asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+            <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+        </environment>*@
+    <link rel="stylesheet" href="../lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+
+    @RenderSection("Styles", required: false)
+
+    
+    <style>
+        .layui-nav {
+            position: relative;
+            padding: 0;
+            background-color: #24998d;
+            color: #fff;
+            border-radius: 2px;
+            font-size: 0;
+            box-sizing: border-box;
+        }
+    </style>
+
+    @RenderSection("Scripts_head", required: false)
+
+</head>
+<body style="width:100%;height:100%;">
+
+    @RenderBody()
+    <script>
+        //function Page_Load() {
+        //    require(["../js/Web/Index.js"], function (index) {
+        //        var objPage = new index.Index();
+        //        objPage.Page_Load();
+        //    });
+        //}
+
+        //function btnConsole_Click() {
+        //    require(["../js/Web/Index.js"], function (index) {
+        //        var objPage = new index.Index();
+        //        objPage.btnConsole_Click();
+        //    });
+        //}
+
+        //function btnCancellation_Click() {
+        //    require(["../js/Web/Index.js"], function (index) {
+        //        var objPage = new index.Index();
+        //        objPage.btnCancellation_Click();
+        //    });
+        //}
+
+        ////切换教学班
+        //function EduCls_Click(strkey, strName, strTypeID, strCourseId, strCourseName) {
+        //    require(["../js/Web/Index.js"], function (index) {
+        //        var objPage = new index.Index();
+        //        objPage.EduCls_Click(strkey, strName, strTypeID, strCourseId, strCourseName);
+        //    });
+        //    //RemoveIfame_Click();
+        //}
+
+        //信息提示
+        function layui_Alert(iconKey, strMsg) {
+
+            layer.msg(strMsg, {
+                icon: iconKey,
+                time: 2000
+            });
+        }
+
+    </script>
+
+
+    <!-- 网页尾部信息 -->
+
+    @RenderSection("Scripts", required: false)
+
+</body>
+</html>

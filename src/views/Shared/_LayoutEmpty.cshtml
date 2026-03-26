@@ -1,0 +1,40 @@
+﻿@*@page
+@{
+    Layout = null;
+}*@
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    @*<meta name="viewport" content="width=device-width" />*@
+
+    <meta charset="GB2312">
+
+    <meta name="keywords" content="" />
+
+    <meta name="description" content="" />
+
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0' />
+
+    <meta name="author" content="" />
+
+    <meta name="copyright" content="" />
+
+    <meta charset="utf-8" />
+   
+
+    <title>_LayoutEmpty</title>
+
+
+    @RenderSection("Styles", required: false)
+
+    @RenderSection("Scripts", required: false)
+</head>
+<body>
+
+    <div style="width:100%;">
+        @RenderBody()
+    </div>
+</body>
+</html>

@@ -1,0 +1,185 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <title>@ViewData["Title"]</title>
+
+
+
+    @*<environment include="Development">
+            <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+            <link rel="stylesheet" href="~/css/site.css" />
+        </environment>
+        <environment exclude="Development">
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+                  asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+                  asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+            <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+        </environment>*@
+    <link rel="stylesheet" href="../lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+
+    @RenderSection("Styles", required: false)
+
+    <style>
+        .layui-nav {
+            position: relative;
+            padding: 0 20px;
+            background-color: #24998d;
+            color: #fff;
+            border-radius: 2px;
+            font-size: 0;
+            box-sizing: border-box;
+        }
+    </style>
+
+</head>
+<body style="width:100%;height:100%;">
+    <div class="top">
+        @*<div class="top_con">
+            <div class="top_title"><a id="indexTitle" style="color:white" href="index"></a></div>
+            <div class="top_select">
+                <ul class="layui-nav left fast-add" lay-filter="" id="EduCls">
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">
+                            <span id="eduClsName"></span>
+                        </a>
+                        <dl class="layui-nav-child" id="dlEduClsList">
+                         
+                        </dl>
+                    </li>
+
+                </ul>
+            </div>
+            <div class="top_login">
+                <a id="tz_login" href="#" onclick="xadmin.open('登录','../Web/Login?state=1',700,700)">
+                   
+                    登录
+                </a>
+                <a id="tz_Register" href="#" onclick="xadmin.open('注册','https://www.sh-tz.com/ExamLib/WebForm/Admin/wfmRegisterStu.aspx?IsShowReturn=false')">注册</a>
+                <a id="userName" href="#" style="display:none;" onclick="btnConsole_Click()"></a>
+                <a id="cancellation" href="#" style="display:none; color:darkorange" onclick="btnCancellation_Click()">注销</a>
+            </div>
+        </div>*@
+    </div>
+    @RenderBody()
+    <script>
+        //function Page_Load() {
+        //    require(["../js/Web/Index.js"], function (index) {
+        //        var objPage = new index.Index();
+        //        objPage.Page_Load();
+        //    });
+        //}
+
+        //function btnConsole_Click() {
+        //    require(["../js/Web/Index.js"], function (index) {
+        //        var objPage = new index.Index();
+        //        objPage.btnConsole_Click();
+        //    });
+        //}
+
+        //function btnCancellation_Click() {
+        //    require(["../js/Web/Index.js"], function (index) {
+        //        var objPage = new index.Index();
+        //        objPage.btnCancellation_Click();
+        //    });
+        //}
+
+        ////切换教学班
+        //function EduCls_Click(strkey, strName, strTypeID, strCourseId, strCourseName) {
+        //    require(["../js/Web/Index.js"], function (index) {
+        //        var objPage = new index.Index();
+        //        objPage.EduCls_Click(strkey, strName, strTypeID, strCourseId, strCourseName);
+        //    });
+        //    //RemoveIfame_Click();
+        //}
+
+        ////信息提示
+        //function layui_Alert(iconKey, strMsg) {
+
+        //    layer.msg(strMsg, {
+        //        icon: iconKey,
+        //        time: 2000
+        //    });
+        //}
+
+    </script>
+
+    @*<environment include="Development">
+            <script src="~/lib/jquery/dist/jquery.js"></script>
+            <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+            <script src="~/js/site.js" asp-append-version="true"></script>
+            <script type="module" src="../lib/bootstrap/dist/js/popper.js"></script>
+        </environment>
+        <environment exclude="Development">
+            <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
+                    asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                    asp-fallback-test="window.jQuery"
+                    crossorigin="anonymous"
+                    integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
+            </script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+                    asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                    asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                    crossorigin="anonymous"
+                    integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd">
+            </script>
+            <script src="~/js/site.js" asp-append-version="true"></script>
+        </environment>*@
+
+    <!-- 网页尾部信息 -->
+    <div class="footer">
+        <div class="foot">
+            @*<div class="fleft">
+                <span class="flogo"><a href="#" title="游戏化教育平台">游戏化教育平台</a></span>
+                <ul class="flist">
+                    <li id="flfirst">
+                        <a href="http://www.shnu.edu.cn/"
+                           target="_blank">上海师范大学</a>
+                    </li>
+                    <li id="flfirst">
+                        <a href="https://www.sh-tz.com/"
+                           target="_blank">上海泰泽</a>
+                    </li>
+                </ul>
+                <div class="copyright">
+                    Copyright &#169; 2021  游戏化教育平台v1
+                </div>
+            </div>
+            <div class="fright">
+                <ul class="rlist">
+
+                    <li><a href="77240613@qq.com" class="flink3">Email</a></li>
+
+                </ul>
+                <ul class="fimg">
+                    <li>
+                        <a href="http://wpa.qq.com/msgrd?v=3&uin=77240613&site=qq&menu=yes" class="fimglink1"
+                           title="关注微信"></a>
+                    </li>
+                    <li>
+                        <a href="http://wpa.qq.com/msgrd?v=3&uin=77240613&site=qq&menu=yes" class="fimglink2"
+                           title="制作人QQ"></a>
+                    </li>
+                </ul>
+            </div>*@
+        </div>
+    </div>
+
+    <script src="../lib/jquery/dist/jquery.js"></script>
+    <script src="../lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    @*<script src="~/lib/Xadmin/lib/layui/layui.js" charset="utf-8"></script>
+        <script src="~/lib/Xadmin/js/xadmin.js" type="text/javascript"></script>*@
+    <script src="../lib/require/require.js" data-main="../js/src/config"></script>
+
+    @RenderSection("Scripts", required: false)
+
+</body>
+</html>

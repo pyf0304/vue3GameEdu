@@ -1,0 +1,419 @@
+﻿@page
+@{
+
+    Layout = "~/Pages/Shared/_Layout_PC.cshtml";
+    ViewData["Title"] = "操作类型题目检查";
+}
+
+
+@section Styles{
+
+    <link rel="stylesheet" href="~/lib/Xadmin/css/font.css">
+    <link rel="stylesheet" href="~/lib/Xadmin/css/xadmin.css">
+    <!-- <link rel="stylesheet" href="./css/theme5.css"> -->
+    @*<link rel="stylesheet" type="text/css" href="~/css/bootstrap-3.3.4.css">*@
+    <style>
+        .mask {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            filter: alpha(opacity=0);
+            opacity: 0;
+            background: #ffffff
+        }
+    </style>
+
+}
+@section Scripts{
+    <script src="../lib/jquery/dist/jquery.js"></script>
+
+
+    <script src="~/lib/Xadmin/lib/layui/layui.js" charset="utf-8"></script>
+    <script src="~/lib/Xadmin/js/xadmin.js" type="text/javascript"></script>
+    <script src="../lib/require/require.js" data-main="../js/src/config"></script>
+    <script type="text/javascript">
+
+
+        //$("#rundata").click(function () {
+
+
+
+        //    //var divAppend = document.getElementById("iframe1");
+        //    ////var obj = document.createElement("Input");
+
+        //    //var m = document.createElement("label")
+        //    //m.id = "lblMsg"
+        //    //m.value = "提示：编辑js方法需要加script标签";
+        //    //divAppend.appendChild(m);
+
+
+        //   // iframename.location.reload()
+
+        //    //获取输入框内的数据
+        //    var text = document.getElementById('inputdata').value;
+        //    // 先清空iframe
+        //    //var iframe = document.getElementById("iframe1").contentWindow.document.body.innerText = "";
+        //   // var iframe = document.getElementById("iframe1");
+        //   // var iframe = document.frames['iframe1'].document.body.innerText = "";
+        //  //  $($("#iframe1")[0].contentWindow.document.body).remove();
+        //    // var iframe = window.frames["iframe1"].document.body.innerHTML = "";
+
+        //    if (document.getElementById("iframe1").contentWindow.document.body.innerText == "") {
+        //        var obj = window.frames["iframe1"];
+        //        obj.document.body.innerHTML = "<div id='Test'>test</div>";
+        //    }
+        //    else {
+        //        var iframe = document.getElementById("iframe1").contentWindow.document.body.innerText = "";
+        //        var obj = window.frames["iframe1"];
+        //        obj.document.body.innerHTML = "<div id='Test'>test</div>";
+        //    }
+
+
+        //    //将输入框内的数据传给iframe
+        //    //var doc = document.getElementById('iframe1').contentWindow.document || document.getElementById('iframe1').contentDocument;
+        //    ////mainFrame是子iframe的name
+        //    //var obj = window.frames["iframe1"];
+        //    //obj.document.body.innerHTML = "<div id='Test'></div>";
+        //    //iframe = doc.write(text);
+        //    //doc.close();
+
+
+
+        //    iframe = document.getElementById('iframe1').contentDocument.write(text);
+
+        //});
+
+
+
+    //function getNumber(a, b) {
+    //   // alert(a + b);
+    //    return a + b;
+    //}
+
+    //var i = getNumber(3, 5)
+    //alert(i)
+    </script>
+}
+
+
+
+<script>
+
+    function GetRequest() {
+        var url = location.search; //获取url中"?"符后的字串
+        var theRequest = new Object();
+        if (url.indexOf("?") != -1) {
+            var str = url.substr(1);
+            strs = str.split("&");
+            for (var i = 0; i < strs.length; i++) {
+                theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+            }
+        }
+        return theRequest;
+    }
+    function GetQuestionID() {
+        var Request = new Object();
+        Request = GetRequest();
+        var strQuestionId = Request['questionID'];
+        //传递的问题Id
+        $('#hidQuestionID').val(strQuestionId);
+
+
+    }
+
+
+    window.onload = function () {
+
+        //传递临时ID；
+        GetQuestionID();
+        require(["../js/Web/CheckOperationQuestion.js"], function (index) {
+
+            var objPage = new index.CheckOperationQuestion();
+            objPage.Page_Load();
+
+        });
+
+        var iframe = document.getElementById("iframe1").contentWindow.document.body.innerText = "";
+        iframe = document.getElementById('iframe1').contentDocument.write("<div id='Test'></div>");
+    }
+
+    function rundata() {
+
+
+
+        //获取输入框内的数据
+        var text = document.getElementById('inputdata').value;
+        // 先清空iframe
+        var iframe = document.getElementById("iframe1").contentWindow.document.body.innerText = "";
+
+        //if (document.getElementById("iframe1").contentWindow.document.body.innerText == "") {
+        //    var obj = window.frames["iframe1"];
+        //    obj.document.body.innerHTML = "<div id='Test'>test</div>";
+        //}
+        //else {
+        //    var iframe = document.getElementById("iframe1").contentWindow.document.body.innerText = "";
+        //    var obj = window.frames["iframe1"];
+        //    obj.document.body.innerHTML = "<div id='Test'>test</div>";
+        //}
+
+
+        //判断题目是否有自带的html代码，如果有则把它存放到js文本框，用于后期操作；
+        if ($("#htmlcode").val() != "") {
+            //将输入框内的数据传给iframe
+                var iframe = document.getElementById("iframe1").contentWindow.document.body.innerText = "";
+                var obj = window.frames["iframe1"];
+                obj.document.body.innerHTML = "<div id='Test' style='display:none;'>"+$("#htmlcode").val()+"</div>";
+           
+        }
+        //将输入框内的数据传给iframe
+        iframe = document.getElementById('iframe1').contentDocument.write(text);
+
+    }
+
+
+    ////关于获取指定div层 下 相关控件代码 属性；
+    ////代码检查提交；
+    //function CheckAttributeSubmitClick() {
+    //    //获取控件内容；默认TextArea
+    //    var Htmlhtmlcode = $("#htmlcode").val();
+    //    //获取指定控件下的控件ID属性 例如：
+    //    //$("#div1 :input").attr("id");
+    //    //直接获取控件获取ID
+    //    var Id = $("input").attr("id");
+
+    //    //获取样式
+    //    var Css = $("input").attr("class");
+    //    //获取value
+    //    var Value = $("input").attr("value");
+
+    //    //判断如果获取的指定控件下的值长度小于o说明没有作答；
+    //    if (document.getElementById("div2").innerHTML.trim().length < 0) {
+    //        alert("请先点击运行窗口按钮");
+    //    }
+    //    else {
+    //        require(["../js/Web/CheckOperationQuestion.js"], function (index) {
+
+    //            var objPage = new index.CheckOperationQuestion();
+    //            objPage.CheckAttributeSubmitClick(Id, Css, Value);
+    //        });
+    //    }
+
+
+
+    //}
+
+    //关于获取指定iframe1 下 相关控件代码 属性；
+    //代码检查提交；
+    function CheckAttributeSubmitClick() {
+        //获取控件内容；默认TextArea
+        var Htmlhtmlcode = $("#htmlcode").val();
+        //获取指定控件下的控件ID属性 例如：
+        //$("#div1 :input").attr("id");
+        //直接获取控件获取ID
+        //var Id = $("input").attr("id");
+        var Id = $("#div2").find("input").attr("id");
+
+        //获取样式
+        var Css = $("#div2").find("input").attr("class");
+        //获取value
+        var Value = $("#div2").find("input").attr("value");
+
+
+
+        //$("#ii")[0].contentWindow.$("#dd").val();
+            //alert($("#ii")[0].contentWindow.document.getElementById("dd").value);
+            //alert($("#ii")[0].contentWindow.document.getElementById("dd").value);
+
+
+
+
+
+        //判断如果获取的指定控件下的值长度小于o说明没有作答；
+        if (document.getElementById("div2").innerHTML.trim().length < 0) {
+            alert("请先点击运行窗口按钮");
+        }
+        else {
+            require(["../js/Web/CheckOperationQuestion.js"], function (index) {
+
+                var objPage = new index.CheckOperationQuestion();
+                //这里赋值为空，因为是html代码框调用，不用判断属性，隐藏或删除；
+                objPage.CheckAttributeSubmitClick(Id, Css, Value,"");
+            });
+        }
+
+
+
+    }
+
+
+</script>
+
+
+<script type="text/javascript">
+
+    //得到子iframe框架控件属性值；
+    function Checkrundata() {
+
+      
+
+
+        //判断如果获取的指定控件下的值长度小于o说明没有作答；
+        if ($("#iframe1").contents().find("input").length < 0) {
+            alert("请先点击运行窗口按钮");
+        }
+        else {
+            //判断隐藏
+            var ControlId = $("#hidControlID").val();//此ID是数据库中需要操作的标准ID
+
+            var strid = $("#iframe1").contents().find("#TestText").attr("id");
+            var strclass = $("#iframe1").contents().find("#TestText").attr("class");
+            var strvalue = $("#iframe1").contents().find("#TestText").val();
+
+            //根据检查类型来判断 是隐藏还是删除；0002隐藏 0003删除；
+            var ExaminationTypeId = $("#hidExaminationTypeId").val();
+            var strResultType;
+            if (ExaminationTypeId == "0002") {
+             
+
+                //获取iframe中的控件属性；
+                //var strid = $("#iframe1").contents().find("#" + ControlId).attr("id");
+             //   var strid = $("#iframe1").contents().find("#" + ControlId).attr("id");
+                //if (document.getElementById("" + ControlId).style.display == "none") {
+                if ($("#iframe1").contents().find("#" + ControlId).is(":hidden")) {
+                    strResultType = "1";
+                }
+                else {
+                    strResultType = "2";
+                }
+            }
+            else {
+                //判断删除；0003
+
+
+            }
+
+            require(["../js/Web/CheckOperationQuestion.js"], function (index) {
+
+                var objPage = new index.CheckOperationQuestion();
+                objPage.CheckAttributeSubmitClick(strid, strclass, strvalue,strResultType);
+            });
+        }
+
+       // alert(strid + strclass + strvalue);
+    }
+
+
+    //父窗口调用子iframe界面js函数结果；
+            function GetData(data)
+            {
+                document.getElementById("newid").value = data;
+            }
+
+
+</script>
+<input id="newid" type="text" name="num" style="display:none;">
+
+<div style="width:100%;float:left;margin:20px;">
+    <label id="ContentHtmlText" style="float:left;color:dodgerblue;"></label>
+</div>
+<br />
+<div style="width:100%">
+    <label id="HtmlText" style="float:left;margin:10px;color:red;font-size:20px;width:100%;">html编码</label>
+
+    <div style="width:49%;float:left;">
+
+
+        <textarea id="htmlcode" cols="115" rows="15"></textarea>
+        <br>
+
+
+        <button onclick="CheckAttributeSubmitClick()" style="float:right;">检查html提交</button>&nbsp;&nbsp;&nbsp;
+        <button onclick="Preview()" style="float:right;">运行html内容</button>
+    </div>
+
+    <div id="div2" style="width:50%;float:right;border:solid 1px;min-height:255px;">
+
+    </div>
+
+    <table id="tabwucScore" name="tabwucScore" style="width: 100%; padding: 1px;" class="table table-bordered table-hover table td"></table>
+</div>
+
+
+<body>
+    <label id="jsText" style="float:left;margin:10px;color:red;font-size:20px;width:100%;">js编码</label>
+    <div style="width:49%;float:left;">
+        <textarea rows="15" cols="115" id="inputdata"></textarea>
+        <br>
+
+        <button id="Checkrundata" onclick="Checkrundata()" style="float:right;">检查js提交</button>
+        &nbsp;&nbsp;&nbsp;
+        <button id="rundata" onclick="rundata()" style="float:right;">运行js内容</button>
+
+
+    </div>
+
+    <div style="position:relative;float:right;width:50%;border: solid 1px;min-height:255px;">
+        <div class="mask"></div>
+
+        <iframe id="iframe1" name="iframe1" style="width:100%;border:0px;"></iframe>
+
+    </div>
+
+</body>
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    //Js函数，用于界面的CRUD, 后备之用,可能后面派作用
+
+    function Preview() {
+        console.log("in Preview()");
+        //var TestWin = open('');
+        //TestWin.document.write(htmlcode.value);
+
+        //判断如果没有输入内容则提示
+
+
+        var div1 = document.getElementById('div2');
+        div1.innerHTML = htmlcode.value.trim();
+    }
+
+    //function Preview2() {
+    //    console.log("in Preview()");
+    //    //var TestWin = open('');
+    //    //TestWin.document.write(htmlcode.value);
+    //    var div1 = document.getElementById('div1');
+    //    var htmlcode1 = "<span>aa</span><br/><a>mylink</a>";
+    //    div1.innerHTML = htmlcode1;
+    //}
+
+    var flag = false;
+
+    function closeOtherSubMenu(strKey) {
+
+    }
+
+
+</script>
+<!-- 存放标准表主键； -->
+<input id="hidCriteriaId" type="hidden" />
+<!-- 存放标准检查类型； -->
+<input id="hidExaminationTypeId" type="hidden" />
+<!-- 存放闯关批次； -->
+<input id="hidExamBatchNo" type="hidden" />
+<!-- 存放题目ID； -->
+<input id="hidQuestionID" type="hidden" />
+
+<!-- 存放控件ID； -->
+<input id="hidControlID" type="hidden" />
+
+

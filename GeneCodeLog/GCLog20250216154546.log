@@ -1,0 +1,4 @@
+﻿生成日期：20250216154546(当前工程Id:0112, 用户：pyf)
+错误：表Id:[01120993]，Cm项目Id:[000041]找不到相关对象！(intFindFailCount=2)(当前对象数:650)(AGC4WApi.clsPrjTabExWApi:GetObjExByTabId_CacheEx)生成表:[vCurrEduClsStu_Sim(01120993)]时.(System.Threading.ExecutionContext:RunInternal->System.Threading.ThreadHelper:ThreadStart_Context->Agc_CsWin.clsGeneCode_Local:GeneAllCheckedTableThreeLayer).
+针对表:01120093(TeacherInfo)
+共计生成文件数:0(共计表:2).

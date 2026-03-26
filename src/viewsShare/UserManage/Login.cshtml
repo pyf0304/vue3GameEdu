@@ -1,0 +1,66 @@
+﻿@page
+@model TaskManage.Pages.LoginModel
+@{
+    Layout = "~/Pages/Shared/_Layout_PC.cshtml";
+
+    ViewData["Title"] = "TestSession1";
+    //存Session,pyf1,pyf2,pyf3
+    Model.SetSession("pyf1", "abc123456");
+    Model.SetSession2("pyf2", "abc123456");
+    Model.SetSession3("pyf3", "abc123456");
+
+
+}
+
+<h1>TestSession1</h1>
+
+
+<div>
+    <a href="/Session/SetString">用户登录</a>
+
+    <span class="text-danger">用户名:</span>   <input type="text" id="txtUserId" class="text-Info" value="" />
+
+    <span class="text-Info">口令:</span> <input type="text" id="txtPassword" class="text-Info" value="" />
+    
+    <p>
+        <input type="button" onclick="SetSession('pyf','abc123')" class="btn btn-outline-info" value="登录" />
+
+    </p>
+    <p></p>
+    <span class="text-danger">通过本页面模型(PageModel)获取Session值:</span>
+    <p></p>
+    <span class="text-danger">Key:</span>  <span id="myKey" class="text-danger">pyf2</span>
+    <span class="text-Info">Value:</span>  <span class="text-info">@Model.GetSession2("pyf2")</span>
+</div>
+
+
+
+<script type="text/javascript">
+    //Js函数，用于界面的CRUD, 后备之用,可能后面派作用
+    
+    function SetSession(Key, Value) {
+
+        $.ajax({
+            url: "/Session/SetString",
+            cache: false,
+            async: false,
+            type: 'get',
+            dataType: "json",
+            data: {
+                Key: Key,
+                Value: Value
+            },
+            success: function (data) {
+                //$('#myValue').val(text);
+                var strKey = data.key;
+                var strValue = data.value;
+
+                $('#myKey').html(strKey);
+                $('#myValue').html(strValue);
+                console.log(strKey + strValue);
+
+            }
+
+        });
+    }
+</script>

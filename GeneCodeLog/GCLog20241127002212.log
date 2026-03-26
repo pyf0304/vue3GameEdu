@@ -1,0 +1,36 @@
+﻿生成日期：20241127002212(当前工程Id:0112, 用户：pyf)
+针对界面:01120257(StudentInfoZxCRUD,学生CRUD)
+界面:01120257(StudentInfoZxCRUD,学生CRUD)有输入、输出相关表如下(表数:1):
+1、表:01120131(StudentInfo)
+针对界面:01120238(QuestionnaireCRUD_List,题目CRUD)
+界面:01120238(QuestionnaireCRUD_List,题目CRUD)有输入、输出相关表如下(表数:1):
+1、表:01120001(Questionnaire)
+针对界面:01120117(XzMajorCRUD,专业CRUD)
+界面:01120117(XzMajorCRUD,专业CRUD)有输入、输出相关表如下(表数:2):
+1、表:01120065(XzMajor)
+1、表:01120066(vXzMajor)
+针对界面:01120181(gs_KnowledgesGraphCRUD,知识点逻辑图CRUD)
+界面:01120181(gs_KnowledgesGraphCRUD,知识点逻辑图CRUD)有输入、输出相关表如下(表数:1):
+1、表:01120873(gs_KnowledgesGraph)
+针对界面:01120090(XzMajorDirectionCRUD,专业方向CRUD)
+界面:01120090(XzMajorDirectionCRUD,专业方向CRUD)有输入、输出相关表如下(表数:1):
+1、表:01120552(XzMajorDirection)
+针对界面:01120214(KnowledgeTypeCRUD,知识点类型CRUD)
+界面:01120214(KnowledgeTypeCRUD,知识点类型CRUD)有输入、输出相关表如下(表数:1):
+1、表:01120890(KnowledgeType)
+针对界面:01120228(tz_ContentAttachmentCRUD,内容附件CRUD)
+界面:01120228(tz_ContentAttachmentCRUD,内容附件CRUD)有输入、输出相关表如下(表数:1):
+1、表:01120207(tz_ContentAttachment)
+针对界面:01120254(JxTeachPlanKnowledgeCRUD,教学计划知识点维护)
+界面:01120254(JxTeachPlanKnowledgeCRUD,教学计划知识点维护)有输入、输出相关表如下(表数:1):
+1、表:01120971(JxTeachPlanKnowledge)
+针对界面:01120227(AnswerCRUD,答案CRUD)
+界面:01120227(AnswerCRUD,答案CRUD)有输入、输出相关表如下(表数:1):
+1、表:01120002(Answer)
+针对界面:01120212(ge_StuErrorLibCRUD,学生错误作业集CRUD)
+界面:01120212(ge_StuErrorLibCRUD,学生错误作业集CRUD)有输入、输出相关表如下(表数:1):
+1、表:01120887(ge_StuErrorLib)
+针对界面:01120226(ge_InspectProcessCRUD,检查过程表CRUD)
+界面:01120226(ge_InspectProcessCRUD,检查过程表CRUD)有输入、输出相关表如下(表数:1):
+1、表:01120910(ge_InspectProcess)
+共计生成文件数:121(共计：121个界面文件, 0个表文件)(界面数:11, 相关表数:12).

@@ -1,0 +1,307 @@
+﻿@page
+@model ExamLibWebApp.Pages.WebApp.testUploadPicModel
+@{
+
+    Layout = null;
+
+    var strUrl_Session_SetString = Model.Url_Session_SetString;
+    var strUrl_Session_GetString = Model.Url_Session_GetString;
+}
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="HandheldFriendly" content="true" />
+    <meta name="MobileOptimized" content="320" />
+    <title>wechat</title>
+    <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
+    <script>
+         var strWebRoot = "@Model.WebRoot";
+     var strUrl_Session_SetString = "@Model.Url_Session_SetString";
+        var strUrl_Session_GetString = "@Model.Url_Session_GetString";
+    </script>
+</head>
+
+<body>
+    <header id="header">
+        <div class="nvbt iback" οnclick="back()"></div>
+        <div class="nvtt">wechat</div>
+        <div class="nvbt idoc" οnclick="openDoc('Camera Document','/doc/camera.html')"></div>
+    </header>
+    <div id="dcontent" class="dcontent">
+        <!--<div class="button" οnclick="changeIndex();">
+            选择：<span id="display" style="color:#FF0000">主摄像头</span>
+            <div style="width:0px;height:0px;overflow:hidden;"><select id="index">
+                <option value='1' selected="true">主摄像头</option>
+                <option value='2' >辅摄像头</option>
+            </select></div>
+        </div>-->
+        <div class="button" οnclick="getImage()">拍照</div>
+        <div class="button" οnclick="getVideo()">录像</div>
+        <div class="button" οnclick="downloadVideo()">下载</div>
+        <div class="button" οnclick="uploadAlbumPhoto()">选择相册照片上传</div>
+        <div class="button" οnclick="getLoginMsg()">获取登入信息</div>
+        <div class="button" οnclick="websocketTest()">websocket连接</div>
+        <label>输入信息：</label><input id="msgid" width="300px" height="100px" />
+        <div class="button" οnclick="sendMsg()">发送消息</div>
+        <br /><br />
+        <div id="div_video">
+        </div>
+        <div id="websocket_div"></div>
+        <!-- History list -->
+        <ul id="history" class="dlist" style="text-align:left;">
+            <li id="empty" class="ditem-empty">无历史记录</li>
+        </ul>
+        <br />
+        <div class="button button-waring" οnclick="cleanHistory()">清空历史记录</div>
+        <br />
+    </div>
+    <br />
+    <div id="output">
+        Camera管理摄像头设备，可用于拍摄照片、录制视频文件。
+    </div>
+</body>
+<!--样式：-->
+<!--js-->
+<script type="text/javascript" src="../js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="../js/immersed.js"></script>
+<script type="text/javascript" src="../js/sockjs.min.js"></script>
+<!--<script type="text/javascript" src="../js/common.js"></script>-->
+<script>
+		var i = 1,
+			gentry = null,
+			w = null;
+		var hl = null,
+			le = null,
+			de = null,
+			ie = null;
+		var unv = true;
+		var bUpdated = false; //用于兼容可能提前注入导致DOM未解析完更新的问题
+		var downloads = null;
+		// H5 plus事件处理
+		function plusReady() {
+			// 获取摄像头目录对象
+			plus.io.resolveLocalFileSystemURL('_doc/', function(entry) {
+				entry.getDirectory('camera', {
+					create: true
+				}, function(dir) {
+					gentry = dir;
+					console.log("gentry=" + gentry);
+					//updateHistory();
+				}, function(e) {
+					outSet('Get directory "camera" failed: ' + e.message);
+				});
+			}, function(e) {
+				outSet('Resolve "_doc/" failed: ' + e.message);
+			});
+		}
+		if(window.plus) {
+			plusReady();
+		} else {
+			document.addEventListener('plusready', plusReady, false);
+		}
+		// 监听DOMContentLoaded事件
+		document.addEventListener('DOMContentLoaded', function() {
+			// 获取DOM元素对象
+			hl = document.getElementById('history');
+			le = document.getElementById('empty');
+			de = document.getElementById('display');
+			if(ie = document.getElementById('index')) {
+				ie.onchange = indexChanged;
+			}
+			// 判断是否支持video标签
+			unv = !document.createElement('video').canPlayType;
+			//updateHistory();
+		}, false);
+
+		var ws = plus.webview.currentWebview();
+
+		function back(hide) {
+			if(plus) {
+				ws || (ws = plus.webview.currentWebview());
+				if(hide || ws.preate) {
+					ws.hide('auto');
+				} else {
+					ws.close('auto');
+				}
+			} else if(history.length > 1) {
+				history.back();
+			} else {
+				window.close();
+			}
+		};
+		// 录像
+		function getVideo() {
+			outSet('开始录像：');
+			var cmr = plus.camera.getCamera();
+			cmr.startVideoCapture(function(p) {
+				outLine('成功：' + p);
+				console.log("录制视频成功，路径为：" + p);
+				plus.io.resolveLocalFileSystemURL(p, function(entry) {
+					//createItem(entry);
+					playVideo(p, entry);
+				}, function(e) {
+					outLine('读取录像文件错误：' + e.message);
+				});
+			}, function(e) {
+				outLine('失败：' + e.message);
+			}, {
+				filename: '_doc/camera/',
+				index: i
+			});
+		}
+
+		//播放视频
+		function playVideo(path, entry) {
+			console.log("entry.name=" + entry.name);
+			console.log("entry.toLocalURL()=" + entry.toLocalURL());
+			console.log("gentry.toLocalURL()=" + gentry.toLocalURL());
+			var localUrl = encodeURI("http://192.168.9.105:8860/v1/uploadDownload/downloadFile?imageName=1510553721741.mp4");
+			console.log(localUrl);
+			//var localUrl = entry.toLocalURL();
+			var v = $("<video width='400' height='320' preload='auto' controls='controls' type='video/mp4'/>");
+			v.attr("src", localUrl);
+			$("#div_video").append(v);
+			/*if(w) {
+				outLine('重复点击！');
+				return;
+			}
+			if(!entry) {
+				ouSet('无效的媒体文件');
+				return;
+			}
+			var name = entry.name;
+			var suffix = name.substr(name.lastIndexOf('.'));
+			var url = '';
+			if(suffix == '.mov' || suffix == '.3gp' || suffix == '.mp4' || suffix == '.avi') {
+				//if(unv){plus.runtime.openFile('_doc/camera/'+name);return;}
+				url = '/plus/camera_video.html';
+			} else {
+				url = '/plus/camera_image.html';
+			}
+			w = plus.webview.create(url, url, {
+				hardwareAccelerated: true,
+				scrollIndicator: 'none',
+				scalable: true,
+				bounce: 'all'
+			});
+			w.addEventListener('loaded', function() {
+				w.evalJS('loadMedia("' + entry.toLocalURL() + '")');
+				//w.evalJS('loadMedia("'+'http://localhost:13131/_doc/camera/'+name+'")');
+			}, false);
+			w.addEventListener('close', function() {
+				w = null;
+			}, false);
+			w.show('pop-in');*/
+		}
+
+		function outSet(msg) {
+			$('#output').text(msg);
+		}
+
+		function outLine(msg) {
+			$('#output').text(msg);
+		}
+
+		function downloadVideo() {
+			console.log("进行下载......");
+			var downloadUrl = "http://192.168.9.105:8860/v1/uploadDownload/downloadFile?imageName=1510556514121.mp4";
+			var dtask = plus.downloader.createDownload(downloadUrl, {
+				filename: '_doc/camera/',
+				priority: 90
+			}, function(d, status) {
+				// 下载完成
+				if(status == 200) {
+					console.log("下载视频成功.....");
+					//视频下载到本地后的真实路径
+					var sd_path = plus.io.convertLocalFileSystemURL(d.filename);
+					console.log("sd_path=" + sd_path);
+					console.log("filename is : " + d.filename);
+					var v = $("<video width='400' height='320' preload='auto' controls='controls' type='video/mp4'/>");
+					v.attr("src", sd_path);
+					$("#div_video").append(v);
+				} else {
+					console.log("下载视频失败....." + status)
+				}
+			});
+			//dtask.addEventListener( "statechanged", onStateChanged, false );
+			dtask.start();
+		}
+
+		function uploadAlbumPhoto() {
+
+		}
+
+		//websocket 操作：
+
+		var websocket;
+
+		function websocketTest() {
+			var websocketUrl = "ws://192.168.9.105:8860/webSocketServer?topic=jack1,jack2,chat";
+			if('WebSocket' in window) {
+				console.log("222");
+				websocket = new WebSocket(websocketUrl);
+				console.log("3333");
+			} else if('MozWebSocket' in window) {
+				websocket = new MozWebSocket("ws://" + document.location.host + "/webSocketServer");
+			} else {
+				websocket = new SockJS("http://" + document.location.host + "/sockjs/webSocketServer");
+			}
+
+			websocket.onopen = function(event) {
+				console.log("onopen----", event.data);
+			};
+			websocket.onmessage = function(event) {
+				//var e= event|| window.event;
+				//$("#test").html(evnt.data);
+				//console.log(event);
+				//var data = event.data;
+				console.log("onmessage----", event.data);
+				$("#websocket_div").append('<div>' + event.data + '</div>');
+			};
+			websocket.onerror = function(event) {
+				console.log("onerror----", event.data);
+			}
+			websocket.onclose = function(event) {
+				console.log("onclose----", event.data);
+			}
+
+		}
+
+		function sendMsg() {
+			if(websocket.readyState == websocket.OPEN) {
+				var msg = $('#msgid').val();
+				//调用后台handleTextMessage方法
+				var json = {
+					"msg": msg,
+					"type": "chat"
+				};
+				//websocket.send(msg);
+				websocket.send(JSON.stringify(json));
+			} else {
+				alert("连接失败!");
+			}
+		}
+
+		function getLoginMsg() {
+			var publicUrl = "http://192.168.9.105:8865";
+			$.ajax({
+				type: 'GET',
+				url: publicUrl + '/station-user/v1/session/sessionInfo',
+				xhrFields: {
+					withCredentials: true
+				},
+				crossDomain: true,
+				success: function(data) {
+					console.log(data);
+					$("#websocket_div").append('<div>' + JSON.stringify(data) + '</div>');
+				}
+			})
+		}
+</script>
+
+</html>

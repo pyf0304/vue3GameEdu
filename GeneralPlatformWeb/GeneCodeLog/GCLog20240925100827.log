@@ -1,0 +1,37 @@
+﻿生成日期：20240925100827(当前工程Id:0014, 用户：pyf)
+针对界面:00140030(QxUserRoleRelationCRUD,QxUserRoleRelation维护)
+界面:00140030(QxUserRoleRelationCRUD,QxUserRoleRelation维护)有输入、输出相关表如下(表数:1):
+1、表:00140013(QxUserRoleRelation)
+错误：当前用户,您好！您还没有设置相关代码生成路径，代码类型：Vue_列表区_TS(Html)(0263)(Html)，请设置！生成界面:[QxUserRoleRelationCRUD(00140030)]的代码类型:[Vue_列表区_TS(Html)]时.(System.Windows.Forms.Button:OnClick->System.Windows.Forms.Control:OnClick->AGC.frmViewInfo_GeneCode:btnGeneCheckedViewCode_Click)
+错误：当前用户,您好！您还没有设置相关代码生成路径，代码类型：Vue共享(TS)(0264)(TypeScript)，请设置！生成界面:[QxUserRoleRelationCRUD(00140030)]的代码类型:[Vue共享(TS)]时.(System.Windows.Forms.Button:OnClick->System.Windows.Forms.Control:OnClick->AGC.frmViewInfo_GeneCode:btnGeneCheckedViewCode_Click)
+针对界面:00140031(QxPrjUserRelationCRUD,QxPrjUserRelation维护)
+界面:00140031(QxPrjUserRelationCRUD,QxPrjUserRelation维护)有输入、输出相关表如下(表数:1):
+1、表:00140031(QxPrjUserRelation)
+错误：当前用户,您好！您还没有设置相关代码生成路径，代码类型：Vue_列表区_TS(Html)(0263)(Html)，请设置！生成界面:[QxPrjUserRelationCRUD(00140031)]的代码类型:[Vue_列表区_TS(Html)]时.(System.Windows.Forms.Button:OnClick->System.Windows.Forms.Control:OnClick->AGC.frmViewInfo_GeneCode:btnGeneCheckedViewCode_Click)
+错误：当前用户,您好！您还没有设置相关代码生成路径，代码类型：Vue共享(TS)(0264)(TypeScript)，请设置！生成界面:[QxPrjUserRelationCRUD(00140031)]的代码类型:[Vue共享(TS)]时.(System.Windows.Forms.Button:OnClick->System.Windows.Forms.Control:OnClick->AGC.frmViewInfo_GeneCode:btnGeneCheckedViewCode_Click)
+针对界面:00140033(QxUsersCRUD,用户维护)
+界面:00140033(QxUsersCRUD,用户维护)有输入、输出相关表如下(表数:1):
+1、表:00140015(QxUsers)
+错误：当前用户,您好！您还没有设置相关代码生成路径，代码类型：Vue_列表区_TS(Html)(0263)(Html)，请设置！生成界面:[QxUsersCRUD(00140033)]的代码类型:[Vue_列表区_TS(Html)]时.(System.Windows.Forms.Button:OnClick->System.Windows.Forms.Control:OnClick->AGC.frmViewInfo_GeneCode:btnGeneCheckedViewCode_Click)
+错误：当前用户,您好！您还没有设置相关代码生成路径，代码类型：Vue共享(TS)(0264)(TypeScript)，请设置！生成界面:[QxUsersCRUD(00140033)]的代码类型:[Vue共享(TS)]时.(System.Windows.Forms.Button:OnClick->System.Windows.Forms.Control:OnClick->AGC.frmViewInfo_GeneCode:btnGeneCheckedViewCode_Click)
+针对界面:00140034(QxDepartmentInfoCRUD,QxDepartmentInfoCRUD)
+界面:00140034(QxDepartmentInfoCRUD,QxDepartmentInfoCRUD)有输入、输出相关表如下(表数:1):
+1、表:00140030(QxDepartmentInfo)
+错误：当前用户,您好！您还没有设置相关代码生成路径，代码类型：Vue_列表区_TS(Html)(0263)(Html)，请设置！生成界面:[QxDepartmentInfoCRUD(00140034)]的代码类型:[Vue_列表区_TS(Html)]时.(System.Windows.Forms.Button:OnClick->System.Windows.Forms.Control:OnClick->AGC.frmViewInfo_GeneCode:btnGeneCheckedViewCode_Click)
+错误：当前用户,您好！您还没有设置相关代码生成路径，代码类型：Vue共享(TS)(0264)(TypeScript)，请设置！生成界面:[QxDepartmentInfoCRUD(00140034)]的代码类型:[Vue共享(TS)]时.(System.Windows.Forms.Button:OnClick->System.Windows.Forms.Control:OnClick->AGC.frmViewInfo_GeneCode:btnGeneCheckedViewCode_Click)
+针对界面:00140035(QxUserStateCRUD,QxUserState维护)
+界面:00140035(QxUserStateCRUD,QxUserState维护)有输入、输出相关表如下(表数:1):
+1、表:00140016(QxUserState)
+错误：当前用户,您好！您还没有设置相关代码生成路径，代码类型：Vue_列表区_TS(Html)(0263)(Html)，请设置！生成界面:[QxUserStateCRUD(00140035)]的代码类型:[Vue_列表区_TS(Html)]时.(System.Windows.Forms.Button:OnClick->System.Windows.Forms.Control:OnClick->AGC.frmViewInfo_GeneCode:btnGeneCheckedViewCode_Click)
+错误：当前用户,您好！您还没有设置相关代码生成路径，代码类型：Vue共享(TS)(0264)(TypeScript)，请设置！生成界面:[QxUserStateCRUD(00140035)]的代码类型:[Vue共享(TS)]时.(System.Windows.Forms.Button:OnClick->System.Windows.Forms.Control:OnClick->AGC.frmViewInfo_GeneCode:btnGeneCheckedViewCode_Click)
+针对界面:00140036(QxUserRolesCRUD,QxUserRoles维护)
+界面:00140036(QxUserRolesCRUD,QxUserRoles维护)有输入、输出相关表如下(表数:1):
+1、表:00140014(QxRoles)
+错误：当前用户,您好！您还没有设置相关代码生成路径，代码类型：Vue_列表区_TS(Html)(0263)(Html)，请设置！生成界面:[QxUserRolesCRUD(00140036)]的代码类型:[Vue_列表区_TS(Html)]时.(System.Windows.Forms.Button:OnClick->System.Windows.Forms.Control:OnClick->AGC.frmViewInfo_GeneCode:btnGeneCheckedViewCode_Click)
+错误：当前用户,您好！您还没有设置相关代码生成路径，代码类型：Vue共享(TS)(0264)(TypeScript)，请设置！生成界面:[QxUserRolesCRUD(00140036)]的代码类型:[Vue共享(TS)]时.(System.Windows.Forms.Button:OnClick->System.Windows.Forms.Control:OnClick->AGC.frmViewInfo_GeneCode:btnGeneCheckedViewCode_Click)
+针对界面:00140037(QxRolesV2CRUD,QxRolesV2维护)
+界面:00140037(QxRolesV2CRUD,QxRolesV2维护)有输入、输出相关表如下(表数:1):
+1、表:00140116(QxRolesV2)
+错误：当前用户,您好！您还没有设置相关代码生成路径，代码类型：Vue_列表区_TS(Html)(0263)(Html)，请设置！生成界面:[QxRolesV2CRUD(00140037)]的代码类型:[Vue_列表区_TS(Html)]时.(System.Windows.Forms.Button:OnClick->System.Windows.Forms.Control:OnClick->AGC.frmViewInfo_GeneCode:btnGeneCheckedViewCode_Click)
+错误：当前用户,您好！您还没有设置相关代码生成路径，代码类型：Vue共享(TS)(0264)(TypeScript)，请设置！生成界面:[QxRolesV2CRUD(00140037)]的代码类型:[Vue共享(TS)]时.(System.Windows.Forms.Button:OnClick->System.Windows.Forms.Control:OnClick->AGC.frmViewInfo_GeneCode:btnGeneCheckedViewCode_Click)
+共计生成文件数:63(共计：63个界面文件, 0个表文件)(界面数:7, 相关表数:7).

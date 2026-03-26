@@ -1,0 +1,44 @@
+﻿@page
+@model TaskManageCore.Pages.WebApp.MissionScheduleModel
+@{
+    ViewBag.Title = "任务系统";
+    Layout = "~/Pages/Shared/_LayoutStatistics.cshtml";
+}
+
+
+<div data-role="header" data-position="fixed">
+    <a asp-page="/WebApp/Statistics" class="ui-btn ui-btn-left ui-icon-carat-l ui-btn-icon-left ui-corner-all">返回</a>
+    <h1>任务进度</h1>
+</div>
+<div data-role="content">
+    <div data-role="main" class="ui-content">
+        <h2>主任务子任务进度表</h2>
+        <ul data-role="listview" data-inset="true">
+            <li>
+                <a href="#">
+                    <h2>主任务1(2天)</h2>
+                    <p>子任务1</p>
+                    <p>子任务2</p>
+                    <p>子任务3</p>
+                    <p>子任务4</p>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <h2>主任务2(1天)</h2>
+                    <p>子任务1</p>
+                    <p>子任务2</p>
+
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <h2>主任务3(2天)</h2>
+                    <p>子任务1</p>
+                    <p>子任务2</p>
+                    <p>子任务3</p>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>

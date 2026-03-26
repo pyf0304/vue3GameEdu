@@ -1,0 +1,1 @@
+import{d as n,r,_ as a,b as o,c as p,g as t,a1 as d}from"./index-19a721c2.js";const u=n({name:"AboutPyf2",setup(){return{UserId:r("0001")}}});function l(e,s,c,f,i,m){return o(),p("div",null,[t("p",null,"UserId: "+d(e.UserId),1),s[0]||(s[0]=t("span",null," this a about2 page!",-1))])}const b=a(u,[["render",l]]);export{b as default};

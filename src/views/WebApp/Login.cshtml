@@ -1,0 +1,185 @@
+﻿@page
+@model TaskManageCore.Pages.WebApp.LoginModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- meta使用viewport以确保页面可自由缩放 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 引入 jQuery Mobile 样式 -->
+    <link rel="stylesheet" href="~/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.css">
+    <!-- 引入 jQuery 库 -->
+    <script src="~/jquery.mobile-1.4.5/jquery-1.11.1.min.js"></script>
+    <!-- 引入 jQuery Mobile 库 -->
+    <script src="~/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.js"></script>
+
+    <script src="../lib/jquery/dist/jquery.js"></script>
+    <script src="../lib/require/require.js" data-main="../js/src/config"></script>
+    <script src="https://pv.sohu.com/cityjson?ie=utf-8"></script>
+    <title>Title</title>
+    <script>
+        var LoginIp = returnCitySN.cip;
+
+         var strUrl_Session_SetString = "@Model.Url_Session_SetString";
+    var strUrl_Session_GetString = "@Model.Url_Session_GetString";
+        var strWebRoot = "@Model.WebRoot";
+
+        function SetSession(Key, Value) {
+
+            $.ajax({
+                url: "/Session/SetString",
+                cache: false,
+                async: false,
+                type: 'get',
+                dataType: "json",
+                data: {
+                    Key: Key,
+                    Value: Value
+                },
+                success: function (data) {
+                    //$('#myValue').val(text);
+                    var strKey = data.key;
+                    var strValue = data.value;
+
+                    $('#myKey').html(strKey);
+                    $('#myValue').html(strValue);
+                    console.log(strKey + strValue);
+
+                }
+
+            });
+        }
+
+        /*
+查询记录
+(AutoGCLib.WA_ViewScript_TS4CSharp:Gen_WApi_JS_btnQuery_Click)
+*/
+        function btnLogin_Click() {
+            require(["../js/WebApp/Login_TSEx.js"], function (users) {
+                $("#Text1").val("进入函数：btnLogin_Click");
+                var objPage = new users.Login_TSEx();
+                objPage.btnQuery_Click();
+            });
+        }
+        
+        function btn_Register_Click() {
+            require(["../js/WebApp/Login_TSEx.js"], function (users) {
+                var objPage = new users.Login_TSEx();
+                objPage.btn_Register_Click();
+            });
+        }
+
+        function btnRegister_Click() {
+            require(["../js/WebApp/Login_TSEx.js"], function (users) {
+                var objPage = new users.Login_TSEx();
+                objPage.btnRegister_Click();
+            });
+        }
+        
+        function selectMajor() {
+            require(["../js/WebApp/Login_TSEx.js"], function (users) {
+                var objPage = new users.Login_TSEx();
+                objPage.selectMajor_Click();
+            });
+        }
+
+    </script>
+</head>
+<body>
+    <!--登陆页面-->
+    <div data-role="page" id="pageLogin">
+        <div data-role="header">
+            <h1 role="heading">研究生学习系统</h1>
+        </div>
+        <div data-role="main" class="ui-content">
+            <form method="get" action="">
+                <div class="ui-field-contain">
+                    <label for="name">用户名:</label>
+                    <input type="text" name="txtUserId" id="txtUserId">
+                    <br />
+                    <label for="password">密码:</label>
+                    <input type="password" name="txtPassword" id="txtPassword">
+                    <div style="margin-top: 20%;">
+                        <a href="" rel="external" data-role="button" data-transition="flow" onclick="btnLogin_Click()">登录</a>
+                        <a href="#pagetwo" data-role="button" data-transition="flip" onclick="btn_Register_Click()">注册</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div data-role="footer" style="text-align: center" data-position="fixed">
+            <p>CopyRight &copy;泰泽教育</p>
+        </div>
+    </div>
+    <!--注册页面-->
+    <div data-role="page" id="pagetwo" data-theme="b">
+        <div data-role="header">
+            <h1>欢迎注册</h1>
+        </div>
+        <div data-role="main" class="ui-content">
+            <form method="get" action="">
+                <div class="ui-field-contain">
+                    <div class="ui-field-contain">
+                        <label for="lblIdentityID">用户类型：</label>
+                        <select id="ddlIdentityID" name="ddlIdentityID" />
+                    </div>
+                    <div class="ui-field-contain">
+                        <input type="date" id="txtStartTime1" name="txtStartTime1" style="display:none;">
+                    </div>
+
+                    <div class="ui-field-contain">
+                        <label for="lblid_XzCollege">学院：</label>
+                        <select id="ddlid_XzCollege" name="ddlid_XzCollege" onchange="selectMajor()" />
+                    </div>
+                    <div class="ui-field-contain">
+                        <input type="date" id="txtStartTime2" name="txtStartTime2" style="display:none;">
+                    </div>
+
+                    <div class="ui-field-contain">
+                        <label for="lblid_XzMajor">专业：</label>
+                        <select id="ddlid_XzMajor" name="ddlid_XzMajor" />
+                    </div>
+                    <div class="ui-field-contain">
+                        <input type="date" id="txtStartTime3" name="txtStartTime3" style="display:none;">
+                    </div>
+
+
+                    <label for="lblid_GradeBase">年级：</label>
+                    <select id="ddlid_GradeBase" name="ddlid_GradeBase" />
+                    <div class="ui-field-contain">
+                        <input type="date" id="txtStartTime4" name="txtStartTime4" style="display:none;">
+                    </div>
+
+
+                    <label for="Rname">账号:</label>
+                    <input type="text" name="txtReUserId" id="txtReUserId">
+
+                    <label for="Rname">姓名:</label>
+                    <input type="text" name="txtUserName" id="txtUserName">
+
+                    <label for="Rname">邮箱:</label>
+                    <input type="text" name="txtEmail" id="txtEmail">
+
+                    <label for="Rpassword">密码:</label>
+                    <input type="password" name="txtRePassword" id="txtRePassword">
+                    @*<br />*@
+                    <label for="Repassword">重复密码:</label>
+                    <input type="password" name="txtRe_Password" id="txtRe_Password">
+                    <div style="margin-top: 20%;">
+                        <a href="#pageLogin" data-role="button" data-transition="flow" data-direction="reverse" onclick="btnRegister_Click()">提交注册</a>
+                        <a href="#pageLogin" data-role="button" data-transition="flip" data-direction="reverse">登录</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div data-role="footer" style="text-align: center" data-position="fixed">
+            <p>CopyRight &copy;泰泽教育</p>
+        </div>
+    </div>
+    <input id="hidUserInfo" type="hidden" value="@Model.GetSession("objvUserRoleRelation")" />
+    <input id="hidStata" type="hidden" value="2" />
+</body>
+</html>

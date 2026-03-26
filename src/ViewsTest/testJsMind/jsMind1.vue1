@@ -1,0 +1,66 @@
+<template>
+  <div ref="jsMindContainer" style="width: 800px; height: 600px"></div>
+</template>
+
+<script setup lang="ts">
+  import { ref, onMounted } from 'vue';
+  // @ts-ignore
+  import * as jsMind from 'jsmind';
+  import 'jsmind/style/jsmind.css';
+  // import jsMind from 'jsmind/es6/jsmind.js';
+  // window.jsMind = jsMind;
+
+  require('jsmind/js/jsmind.draggable.js');
+  require('jsmind/js/jsmind.screenshot.js');
+
+  const jsMindContainer = ref<HTMLDivElement | null>(null);
+
+  onMounted(() => {
+    const mind = new jsMind({
+      container: jsMindContainer.value!,
+      editable: true,
+      theme: 'primary',
+      default_event_handle: {
+        /* 默认事件处理器 */
+      },
+      view: {
+        /* 视图设置 */
+      },
+      layout: {
+        /* 布局设置 */
+      },
+    });
+
+    const rootNode = mind.add_root({
+      id: 'root',
+      topic: 'Main Topic',
+      data: {
+        /* 自定义数据 */
+      },
+    });
+
+    mind.add_node(rootNode, {
+      id: 'child1',
+      topic: 'Child Topic 1',
+      direction: 'right',
+      data: {
+        /* 自定义数据 */
+      },
+    });
+
+    mind.add_node(rootNode, {
+      id: 'child2',
+      topic: 'Child Topic 2',
+      direction: 'right',
+      data: {
+        /* 自定义数据 */
+      },
+    });
+
+    mind.show();
+  });
+</script>
+
+<style scoped>
+  /* 添加必要的样式 */
+</style>

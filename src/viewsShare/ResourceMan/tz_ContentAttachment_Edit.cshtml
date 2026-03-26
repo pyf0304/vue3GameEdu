@@ -1,0 +1,52 @@
+﻿
+@page
+@{
+    Layout = "";
+}
+@section Styles{
+    <link rel="stylesheet" href="../lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="../css/site.css" />
+    <style>
+        .modal-dialog {
+            max-width: 1500px;
+            margin: 1.75rem auto;
+        }
+    </style>
+}
+@section Scripts{
+    <script src="../lib/jquery/dist/jquery.js"></script>
+    <script src="../lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="../js/site.js" asp-append-version="true"></script>
+    <script src="../lib/bootstrap/dist/js/popper.js"></script>
+    <script src="../lib/require/require.js" data-main="../js/src/config"></script>
+}
+
+<div id="tabLayout" class="tab_layout">
+    @*-- 编辑层 --*@
+
+    <div class="modal fade" id="divEditDialog_tz_ContentAttachment" tabindex="-1" role="dialog" aria-labelledby="lblDialogTitle_tz_ContentAttachment" aria-hidden="true">
+        <form id="uploadForm" method="post" enctype="multipart/form-data">
+
+            <div class="modal-dialog">
+                <div class="modal-content" style="width: 1235px;">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="lblDialogTitle_tz_ContentAttachment">模态框（Modal）标题</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                       
+                    </div>
+                    <div class="modal-footer">
+                        <button id="btnCancel_tz_ContentAttachment" type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button id="btnSubmit_tz_ContentAttachment" type="button" class="btn btn-primary" onclick="btntz_ContentAttachment_Edit_Click('Submit')">添加</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal -->
+
+        </form>
+    </div>
+</div>
+
+<input id="hdnFileOne" type="hidden" />

@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+
+    <!-- 引入 jQuery Mobile 样式 -->
+    <link rel="stylesheet" href="../jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.css">
+    <!-- 引入 jQuery 库 -->
+    <script src="../jquery.mobile-1.4.5/jquery-1.11.1.min.js"></script>
+    <!-- 引入 jQuery Mobile 库 -->
+    <script src="../jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.js"></script>
+
+    <script src="../lib/jquery/dist/jquery.js"></script>
+    <script src="../lib/require/require.js" data-main="../js/src/config"></script>
+
+    @RenderSection("Styles", required: false)
+
+</head>
+<body>
+    @*<div data-role="page" id="pageone">*@
+        @RenderBody()
+        @*<div data-role="footer" data-position="fixed">
+         
+
+            <div data-role="navbar">
+                <ul>
+                    <li><a asp-page="/WebApp/Indexs" rel="external" data-icon="home">首页</a></li>
+                    <li><a asp-page="#" rel="external" data-icon="star">统计</a></li>
+                    <li><a asp-page="/WebApp/User" rel="external" data-icon="user" class="ui-btn-active ui-state-persist">我的</a></li>
+
+                </ul>
+            </div>
+
+        </div>
+
+    </div>*@
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,19 @@
+﻿生成日期：20241208015705(当前工程Id:0112, 用户：pyf)
+针对界面:01120258(ClassPerfAnalysisCRUD,班级问题分析查看)
+界面:01120258(ClassPerfAnalysisCRUD,班级问题分析查看)有输入、输出相关表如下(表数:1):
+1、表:01120977(ClassPerfAnalysis)
+针对界面:01120119(CurrEduClsTeacherCRUD,当前教学班教师CRUD)
+界面:01120119(CurrEduClsTeacherCRUD,当前教学班教师CRUD)有输入、输出相关表如下(表数:2):
+1、表:01120124(CurrEduClsTeacher)
+1、表:01120128(vCurrEduClsTeacher)
+针对界面:01120190(cc_ExamPaperStuRelationCRUD,考卷与学生关系CRUD)
+界面:01120190(cc_ExamPaperStuRelationCRUD,考卷与学生关系CRUD)有输入、输出相关表如下(表数:1):
+1、表:01120235(cc_ExamPaperStuRelation)
+针对界面:01120118(CurrEduClsCRUD,当前教学班CRUD)
+界面:01120118(CurrEduClsCRUD,当前教学班CRUD)有输入、输出相关表如下(表数:2):
+1、表:01120123(CurrEduCls)
+1、表:01120126(vCurrEduCls)
+针对界面:01120180(cc_CourseKnowledgesCRUD,课程知识点CRUD)
+界面:01120180(cc_CourseKnowledgesCRUD,课程知识点CRUD)有输入、输出相关表如下(表数:1):
+1、表:01120082(cc_CourseKnowledges)
+共计生成文件数:55(共计：55个界面文件, 0个表文件)(界面数:5, 相关表数:7).

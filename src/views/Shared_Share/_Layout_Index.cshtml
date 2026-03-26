@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - AGC</title>
+
+    @RenderSection("Styles", required: false)
+</head>
+<body>
+    <div>
+        <div class="top" style="width: 100%;">
+            <span>上海泰泽</span>
+            <br />
+
+            <span style="margin-left: 50px">自动生成代码2016版</span>
+            <br />
+
+            <span class="txtMore">&nbsp;&nbsp;&nbsp;&nbsp;支持安卓手机App、苹果ISOApp、SilverLight、JavaScript、Asp.Net等应用的代码自动生成。</span>
+            <br />
+        </div>
+
+        <partial name="_CookieConsentPartial" />
+        <div class="content">
+            <div class="bg">
+                @RenderBody()
+            </div>
+        </div>
+        <div class="bottom">
+            <footer>
+                <span>版权所有：上海泰泽信息技术有限公司</span>
+                <span>联系信箱：<a href="mailto:pyf@shnu.edu.cn">pyf@shnu.edu.cn</a></span>
+                <span>电话：021-51580822</span>
+            </footer>
+        </div>
+        @RenderSection("Scripts", required: false)
+   
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,124 @@
+﻿@page
+@{
+    Layout = null;
+}
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <title>Welcome to Textbox.io</title>
+    <script src="//cdn.bootcss.com/echarts/3.3.2/echarts.min.js" charset="utf-8"></script>
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+
+        // 指定图表的配置项和数据
+        var option = {
+            title: {
+                text: '折线图统计'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['高一（1）', '高一（2）', '高一（3）', '高一（4）', '高一（5）', '高一（6）', '高一（7）', '高一（8）', '高一（9）', '高一（10）']
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: ['语文', '数学', '英语', '政治', '历史', '地理', '生物', '化学', '物理', '信息']
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [
+                {
+                    name: '高一（1）',
+                    type: 'line',
+                    stack: '平均分',
+                    data: [100, 90, 90, 70, 80, 70, 75, 70, 60, 0]
+                },
+                {
+                    name: '高一（2）',
+                    type: 'line',
+                    stack: '平均分',
+                    data: [96, 90, 90, 70, 80, 70, 75, 70, 60, 0]
+                },
+                {
+                    name: '高一（3）',
+                    type: 'line',
+                    stack: '平均分',
+                    data: [80, 90, 90, 70, 80, 70, 75, 70, 60, 0]
+                },
+                {
+                    name: '高一（4）',
+                    type: 'line',
+                    stack: '平均分',
+                    data: [88, 90, 90, 70, 80, 70, 75, 70, 60, 0]
+                },
+                {
+                    name: '高一（5）',
+                    type: 'line',
+                    stack: '平均分',
+                    data: [97, 90, 88, 70, 80, 70, 75, 70, 60, 0]
+                },
+                {
+                    name: '高一（6）',
+                    type: 'line',
+                    stack: '平均分',
+                    data: [88, 88, 90, 70, 80, 70, 75, 70, 60, 0]
+                },
+                {
+                    name: '高一（7）',
+                    type: 'line',
+                    stack: '平均分',
+                    data: [86, 90, 90, 88, 80, 70, 75, 70, 60, 0]
+                },
+                {
+                    name: '高一（8）',
+                    type: 'line',
+                    stack: '平均分',
+                    data: [95, 88, 90, 70, 80, 70, 75, 70, 60, 0]
+                },
+                {
+                    name: '高一（9）',
+                    type: 'line',
+                    stack: '平均分',
+                    data: [93, 90, 88, 70, 80, 70, 75, 70, 60, 0]
+                },
+                {
+                    name: '高一（10）',
+                    type: 'line',
+                    stack: '平均分',
+                    data: [89, 100, 101, 70, 80, 70, 75, 70, 60, 0]
+                }
+            ]
+        };
+
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);</script>
+</head>
+<body>
+    <div class="x-body">
+        <blockquote class="layui-elem-quote">
+            高一
+        </blockquote>
+        <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+        <div id="main" style="width: 100%;height:400px;"></div>
+        <blockquote class="layui-elem-quote"></blockquote>
+    </div>
+</body>
+</html>

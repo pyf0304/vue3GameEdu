@@ -1,0 +1,11 @@
+﻿生成日期：20241125172613(当前工程Id:0112, 用户：pyf)
+针对表:01120195(XzAdminClsType)
+针对表:01120194(XzAdminCls)
+针对表:01120972(BigConcept)
+针对表:01120968(JxTeachingPlan)
+针对表:01120535(Paper)
+针对表:01120131(StudentInfo)
+针对表:01120034(Users)
+错误：表Id:[01120350]，Cm项目Id:[000041]找不到相关对象！(intFindFailCount=2)(当前对象数:454)(AGC4WApi.clsPrjTabExWApi:GetObjExByTabId_CacheEx)生成表:[vXzGrade(01120350)]时.(System.Threading.ExecutionContext:RunInternal->System.Threading.ThreadHelper:ThreadStart_Context->Agc_CsWin.clsGeneCode_Local:GeneAllCheckedTableThreeLayer).
+针对表:01120349(XzGrade)
+共计生成文件数:0(共计表:9).

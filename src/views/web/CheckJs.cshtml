@@ -1,0 +1,85 @@
+﻿@page
+@{
+
+    Layout = "~/Pages/Shared/_Layout_PC.cshtml";
+    ViewData["Title"] = "操作类型题目检查";
+}
+
+
+@section Styles{
+
+    <link rel="stylesheet" href="~/lib/Xadmin/css/font.css">
+    <link rel="stylesheet" href="~/lib/Xadmin/css/xadmin.css">
+
+    <!--测试js运行css -->
+    @*<link href="~/css/checkJsCss/app.972c3691a3c5c7a0053a4ffcac57f2cf.css" rel="stylesheet">*@
+  
+    <style>
+    </style>
+
+}
+@section Scripts{
+    <script src="../lib/jquery/dist/jquery.js"></script>
+
+
+    <!--测试js运行js -->
+    @*<script src="~/lib/checkJs/manifest.67d95f4f2bac744a9e68.js" charset="utf-8"></script>
+        <script src="~/lib/checkJs/vendor.66ac5a22f7db90579483.js" charset="utf-8"></script>
+        <script src="~/lib/checkJs/app.3d79196da433328c5763.js" charset="utf-8"></script>*@
+
+
+    <script src="~/lib/Xadmin/lib/layui/layui.js" charset="utf-8"></script>
+    <script src="~/lib/Xadmin/js/xadmin.js" type="text/javascript"></script>
+    <script src="../lib/require/require.js" data-main="../js/src/config"></script>
+}
+<div id="app">
+
+
+    <div id="box">
+        <!-- <p>1111111111111111</p> -->
+    </div>
+    <a href="#" id="a1" onclick="prev()" style="display: none;">上一题</a>
+    <a href="#" id="a2" onclick="next()">下一题</a>
+
+
+    <script>
+var data=[
+    {"content":'11111111111111111111'},
+    {"content":'22222222222222222222'},
+    {"content":'33333333333333333333'},
+    {"content":'44444444444444444444'},
+    {"content":'55555555555555555555'},
+  ]
+
+  var box=document.getElementById('box');
+  var a1=document.getElementById('a1');
+  var a2=document.getElementById('a2');
+  box.innerHTML="<p>"+data[0].content+"</p>";
+
+  var index=0;
+  function next(){
+      index=index+1;
+      console.log(index);
+      data1=data.slice(index,index+1);
+      box.innerHTML="<p>"+data1[0].content+"</p>";
+
+      if(index==data.length-1){
+      	a2.style.display="none";
+      }else{
+      	a1.style.display="block";
+      }
+  }
+  function prev(){
+  	index=index-1;
+  	console.log(index)
+  	data1=data.slice(index,index+1);
+  	console.log(data1)
+    box.innerHTML="<p>"+data1[0].content+"</p>";
+    if(index==0){
+      	a1.style.display="none";
+     }else{
+     	a2.style.display="block";
+     }
+  }</script>
+
+</div>

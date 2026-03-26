@@ -1,0 +1,32 @@
+﻿<ul class="page" id="page">
+    <li id="shouye" class="p-prev disabled">
+        <a href='javascript:IndexPage(1);'>首 页</a>
+    </li>
+    <li id="shangyiye" class="p-prev disabled">
+        <a href='javascript:PrevPage();'><i></i>上一页</a>
+    </li>
+    <li><a id="one" href="javascript:void(0);">1</a></li>
+    <li><a id="two" href="javascript:void(0);">2</a></li>
+    <li><a id="three" href="javascript:void(0);">3</a></li>
+    <li class="more"><a id="five" href="javascript:void(0);">...</a></li>
+    <li><a id="fore" href="javascript:void(0);">13855</a></li>
+
+    <li class='p-next'>
+        <a href='javascript:NextPage();'>下一页<i></i></a>
+    </li>
+    <li id="weiye" class='p-next'>
+        <a href='javascript:void(0);' onclick="IndexPage(0);">尾 页</a>
+    </li>
+    <li class="total">
+        <span id="countpage">
+            2/13855
+        </span>
+    </li>
+
+    <li class="total">
+        <span id="span_number">
+            共13855页 到第<input type="text" id="input_number" class="page-txtbox" />页
+            <input name="" value="确定" type="button" onclick="JumpToPage();" class="page-btn" />
+        </span>
+    </li>
+</ul>

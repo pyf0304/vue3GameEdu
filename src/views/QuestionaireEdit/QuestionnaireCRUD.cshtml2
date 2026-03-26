@@ -1,0 +1,639 @@
+﻿
+@page
+@{
+    Layout = "~/Pages/Shared/_Layout_PC.cshtml";
+    ViewData["Title"] = "题目维护";
+}
+@section Styles{
+    <link rel="stylesheet" href="../lib/bootstrap/dist/css/bootstrap.css" />
+    @*<link rel="stylesheet" href="../css/site.css" />*@
+    <link rel="shortcut icon" href="~/images/favicon.ico" type="image/x-icon" />
+
+    <link rel="stylesheet" href="~/lib/Xadmin/css/font.css">
+    <link rel="stylesheet" href="~/lib/Xadmin/css/xadmin.css">
+
+   
+}
+@section Scripts{
+    <script src="../lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/xlsx.core.min.js" type="text/javascript"></script>
+    <script src="~/lib/xlsx.full.min.js" type="text/javascript"></script>
+
+    <script src="~/lib/Xadmin/lib/layui/layui.js" charset="utf-8"></script>
+    <script src="~/lib/Xadmin/js/xadmin.js" type="text/javascript"></script>
+    <script src="../lib/bootstrap/dist/js/bootstrap.js"></script>
+
+    <script src="../lib/require/require.js" data-main="../js/src/config"></script>
+}
+<script>
+    //所有用户自定义的JS函数建议都放在这里
+    function btnQuestionOptions_Click(strKeyId) {
+        //xadmin.open('题目选项', '../QuestionaireEdit/QuestionOptionsCRUD?strQuestionId=' + strKeyId, '', '', true);
+        xadmin.open('题目选项', '../QuestionaireEdit/QuestionOptionsCRUD?strQuestionId=' + strKeyId);
+    }
+    //显示附件
+    function btnShowOpenAttachment_Click(strKeyId) {
+        //xadmin.open('附件详情', '../ResourceMan/tz_ContentAttachmentList?strQuestionId=' + strKeyId + '&strContentTypeId=0001', '', '', true);
+        xadmin.open('附件详情', '../ResourceMan/tz_ContentAttachmentList?strQuestionId=' + strKeyId + '&strContentTypeId=0001');
+    }
+    //显示答案
+    function btnShowAnswer_Click(strKeyId, strQuestionTypeId) {
+        //xadmin.open('附件详情', '../ResourceMan/tz_ContentAttachmentList?strQuestionId=' + strKeyId + '&strContentTypeId=0001', '', '', true);
+        xadmin.open('题目答案', '../QuestionaireEdit/AnswerCRUD?strQuestionId=' + strKeyId + '&strQuestionTypeId=' + strQuestionTypeId);
+    }
+    //检查过程
+    function btnInspectProcess_Click(strKeyId) {
+        //xadmin.open('附件详情', '../ResourceMan/tz_ContentAttachmentList?strQuestionId=' + strKeyId + '&strContentTypeId=0001', '', '', true);
+        xadmin.open('检查过程', '../GameLearn/ge_InspectProcessCRUD?strQuestionId=' + strKeyId);
+    }
+
+    //问题知识点关系
+    function btnKnowledgesExamLibRela_Click(strKeyId, strCourseChapterId) {
+        xadmin.open('问题知识点关系', '../Knowledges/cc_KnowledgesExamLibRelaCRUD?strQuestionId=' + strKeyId + '&CourseChapterId=' + strCourseChapterId);
+    }
+
+    //问题检查标准
+    function btnExaminationCriteria_Click(strKeyId) {
+        //xadmin.open('附件详情', '../ResourceMan/tz_ContentAttachmentList?strQuestionId=' + strKeyId + '&strContentTypeId=0001', '', '', true);
+        xadmin.open('问题检查标准', '../GameLearn/ge_ExaminationCriteriaCRUD?strQuestionId=' + strKeyId);
+    }
+
+    //测试题目是否完善
+    function btnTestQuestionName_Click(strKeyId) {
+
+        xadmin.open('测试题目是否完善', '../QuestionaireEdit/TestQuestionName?strQuestionId=' + strKeyId);
+    }
+
+
+
+</script>
+<script>
+
+    /*
+     按钮单击,用于调用Js函数中btn_Click
+    (AutoGCLib.WA_ViewScript_TS4Html:Gen_WApi_JS_btn_Click)
+    */
+    function btn_Click(strCommandName, strKeyId, OrderNum, strQuestionID) {
+        $("#hidOrderNum").val(OrderNum);
+        $("#hidQuestionTypeId").val(OrderNum);
+        $("#hidQuestionID").val(strQuestionID);
+        require(["../js/QuestionaireEdit/QuestionnaireCRUDEx.js"], function (questionnaire) {
+            questionnaire.QuestionnaireCRUDEx.btn_Click(strCommandName, strKeyId);
+        });
+    }
+
+    /*
+     页面导入-在导入页面后运行的函数
+    (AutoGCLib.WA_ViewScript_TS4Html:Gen_WApi_JS_Page_Load)
+    */
+    window.onload = function () {
+        require(["../js/QuestionaireEdit/QuestionnaireCRUDEx.js"], function (questionnaire) {
+            var objPage = new questionnaire.QuestionnaireCRUDEx();
+            objPage.Page_Load();
+        });
+
+          document.getElementById('ExcelFile').addEventListener('change', function (e) {
+            var files = e.target.files;
+            if (files.length == 0) return;
+            var f = files[0];
+            if (!/\.xlsx$/g.test(f.name)) {
+                alert('仅支持读取xlsx格式！');
+                return;
+            }
+            readWorkbookFromLocalFile(f, function (workbook) {
+                readWorkbook(workbook);
+            });
+        });
+        document.getElementById('ddlSheetName').addEventListener('change', function (e) {
+            var strSheetName = $('#ddlSheetName').val();
+            if (strSheetName.length == 0) return;
+
+            readSheet(strSheetName);
+        });
+    }
+
+    //信息提示
+    function layui_Alert(iconKey, strMsg) {
+
+        layer.msg(strMsg, {
+            icon: iconKey,
+            time: 1000
+        });
+    }
+
+    //刷新当前界面
+    function RefreshPage() {
+        require(["../js/QuestionaireEdit/QuestionnaireCRUDEx.js"], function (questionnaire) {
+            var objPage = new questionnaire.QuestionnaireCRUDEx();
+            //objPage.BindGv_Questionnaire4Func(this.thisDivList);
+            objPage.btnReOrder_Click();
+        });
+    }
+
+    //刷新父节点页面
+    function RefreshParent() {
+
+    }
+</script>
+<script>
+    //专门用于导入Excel--题目和答案
+
+    function selectFile() {
+        document.getElementById('file').click();
+    }
+
+    //// 读取本地excel文件
+    //function readWorkbookFromLocalFile(file, callback) {
+    //    var reader = new FileReader();
+    //    reader.onload = function (e) {
+    //        var data = e.target.result;
+    //        var workbook = XLSX.read(data, { type: 'binary' });
+    //        if (callback) callback(workbook);
+    //    };
+    //    reader.readAsBinaryString(file);
+    //}
+
+    //// 从网络上读取某个excel文件，url必须同域，否则报错
+    //function readWorkbookFromRemoteFile(url, callback) {
+    //    var xhr = new XMLHttpRequest();
+    //    xhr.open('get', url, true);
+    //    xhr.responseType = 'arraybuffer';
+    //    xhr.onload = function (e) {
+    //        if (xhr.status == 200) {
+    //            var data = new Uint8Array(xhr.response)
+    //            var workbook = XLSX.read(data, { type: 'array' });
+    //            if (callback) callback(workbook);
+    //        }
+    //    };
+    //    xhr.send();
+    //}
+
+    // 读取 excel文件
+    function outputWorkbook(workbook) {
+        var sheetNames = workbook.SheetNames; // 工作表名称集合
+        sheetNames.forEach(name => {
+            var worksheet = workbook.Sheets[name]; // 只能通过工作表名称来获取指定工作表
+            for (var key in worksheet) {
+                // v是读取单元格的原始值
+                console.log(key, key[0] === '!' ? worksheet[key] : worksheet[key].v);
+            }
+        });
+    }
+
+    function readWorkbook(workbook) {
+        var sheetNames = workbook.SheetNames; // 工作表名称集合
+        var worksheet = workbook.Sheets[sheetNames[0]]; // 这里我们只读取第一张sheet
+        var csv = XLSX.utils.sheet_to_csv(worksheet);
+        document.getElementById('result').innerHTML = csv2table(csv);
+    }
+
+    // 将csv转换成表格
+    function csv2table(csv) {
+        var html = '<table>';
+        var rows = csv.split('\n');
+        rows.pop(); // 最后一行没用的
+        rows.forEach(function (row, idx) {
+            var columns = row.split(',');
+            columns.unshift(idx + 1); // 添加行索引
+            if (idx == 0) { // 添加列索引
+                html += '<tr>';
+                for (var i = 0; i < columns.length; i++) {
+                    html += '<th>' + (i == 0 ? '' : String.fromCharCode(65 + i - 1)) + '</th>';
+                }
+                html += '</tr>';
+            }
+            html += '<tr>';
+            columns.forEach(function (column) {
+                html += '<td>' + column + '</td>';
+            });
+            html += '</tr>';
+        });
+        html += '</table>';
+        return html;
+    }
+
+    function table2csv(table) {
+        var csv = [];
+        $(table).find('tr').each(function () {
+            var temp = [];
+            $(this).find('td').each(function () {
+                temp.push($(this).html());
+            })
+            temp.shift(); // 移除第一个
+            csv.push(temp.join(','));
+        });
+        csv.shift();
+        return csv.join('\n');
+    }
+
+    // csv转sheet对象
+    function csv2sheet(csv) {
+        var sheet = {}; // 将要生成的sheet
+        csv = csv.split('\n');
+        csv.forEach(function (row, i) {
+            row = row.split(',');
+            if (i == 0) sheet['!ref'] = 'A1:' + String.fromCharCode(65 + row.length - 1) + (csv.length - 1);
+            row.forEach(function (col, j) {
+                sheet[String.fromCharCode(65 + j) + (i + 1)] = { v: col };
+            });
+        });
+        return sheet;
+    }
+
+    // 将一个sheet转成最终的excel文件的blob对象，然后利用URL.createObjectURL下载
+    function sheet2blob(sheet, sheetName) {
+        sheetName = sheetName || 'sheet1';
+        var workbook = {
+            SheetNames: [sheetName],
+            Sheets: {}
+        };
+        workbook.Sheets[sheetName] = sheet;
+        // 生成excel的配置项
+        var wopts = {
+            bookType: 'xlsx', // 要生成的文件类型
+            bookSST: false, // 是否生成Shared String Table，官方解释是，如果开启生成速度会下降，但在低版本IOS设备上有更好的兼容性
+            type: 'binary'
+        };
+        var wbout = XLSX.write(workbook, wopts);
+        var blob = new Blob([s2ab(wbout)], { type: "application/octet-stream" });
+        // 字符串转ArrayBuffer
+        function s2ab(s) {
+            var buf = new ArrayBuffer(s.length);
+            var view = new Uint8Array(buf);
+            for (var i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
+            return buf;
+        }
+        return blob;
+    }
+
+    @*/**
+	 * 通用的打开下载对话框方法，没有测试过具体兼容性
+	 * @param url 下载地址，也可以是一个blob对象，必选
+	 * @param saveName 保存文件名，可选
+	 */*@
+    function openDownloadDialog(url, saveName) {
+        if (typeof url == 'object' && url instanceof Blob) {
+            url = URL.createObjectURL(url); // 创建blob地址
+        }
+        var aLink = document.createElement('a');
+        aLink.href = url;
+        aLink.download = saveName || ''; // HTML5新增的属性，指定保存文件名，可以不要后缀，注意，file:///模式下不会生效
+        var event;
+        if (window.MouseEvent) event = new MouseEvent('click');
+        else {
+            event = document.createEvent('MouseEvents');
+            event.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+        }
+        aLink.dispatchEvent(event);
+    }
+
+    $(function () {
+        document.getElementById('file').addEventListener('change', function (e) {
+            var files = e.target.files;
+            if (files.length == 0) return;
+            var f = files[0];
+            if (!/\.xlsx$/g.test(f.name)) {
+                alert('仅支持读取xlsx格式！');
+                return;
+            }
+              console.error("files.length:", files.length);
+            readWorkbookFromLocalFile(f, function (workbook) {
+                readWorkbook(workbook);
+            });
+        });
+        loadRemoteFile('./sample/test.xlsx');
+    });
+
+    function loadRemoteFile(url) {
+        readWorkbookFromRemoteFile(url, function (workbook) {
+            readWorkbook(workbook);
+        });
+    }
+
+     //导出Excel 通过js；
+    function exportExcel() {
+        
+        var sheet = XLSX.utils.table_to_sheet($('#divDataLst table')[0]);
+        openDownloadDialog(sheet2blob(sheet), '下载2.xlsx');
+    }
+
+    function exportSpecialExcel() {
+        var aoa = [
+			['主要信息', null, null, '其它信息'], // 特别注意合并的地方后面预留2个null
+			['姓名', '性别', '年龄', '注册时间'],
+			['张三', '男', 18, new Date()],
+			['李四', '女', 22, new Date()]
+        ];
+        var sheet = XLSX.utils.aoa_to_sheet(aoa);
+        sheet['!merges'] = [
+			// 设置A1-C1的单元格合并
+			{ s: { r: 0, c: 0 }, e: { r: 0, c: 2 } }
+        ];
+        openDownloadDialog(sheet2blob(sheet), '单元格合并示例.xlsx');
+    }
+
+    function exportSpecialExcel_pyf(arrData, strFileName) {
+        //var aoa = [
+        //    ['主要信息', null, null, '其它信息'], // 特别注意合并的地方后面预留2个null
+        //    ['姓名', '性别', '年龄', '注册时间'],
+        //    ['张三', '男', 18, new Date()],
+        //    ['李四', '女', 22, new Date()]
+        //];
+        var sheet = XLSX.utils.aoa_to_sheet(arrData);
+        //sheet['!merges'] = [
+        //    // 设置A1-C1的单元格合并
+        //    { s: { r: 0, c: 0 }, e: { r: 0, c: 2 } }
+        //];
+        openDownloadDialog(sheet2blob(sheet), strFileName);
+    }
+</script>
+<script>
+    var objWorkBook;
+    function selectFile() {
+        document.getElementById('ExcelFile').click();
+    }
+    //// 读取本地excel文件
+    function readWorkbookFromLocalFile(file, callback) {
+        console.error("run in readWorkbookFromLocalFile");
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            var data = e.target.result;
+            var workbook = XLSX.read(data, { type: 'binary' });
+            if (callback) callback(workbook);
+        };
+        reader.readAsBinaryString(file);
+    }
+    var strCsv = "";
+    function readWorkbook(workbook) {
+        objWorkBook = workbook;
+        var sheetNames = workbook.SheetNames; // 工作表名称集合
+        var ddlSheetName = document.getElementById('ddlSheetName');
+        ddlSheetName.options.length = 0;
+        sheetNames.forEach(x => { ddlSheetName.options.add(new Option(x, x)) });
+        var worksheet = workbook.Sheets[sheetNames[0]]; // 这里我们只读取第一张sheet
+        var csv = XLSX.utils.sheet_to_csv(worksheet);
+        console.log(csv);
+        //var myType = typeof csv;
+        //console.log("myType:", myType);
+        //var strUserId = "pyf-Test";
+        //var a = 3;
+        //var b = 4;
+
+        //require(["../js/TS/L3_ForWApiEx/BaseInfo/clsTeacherInfoExWApi.js"], function (teacherinfo) {
+        //    teacherinfo.clsTeacherInfoExWApi.ImportDataFromCsv(csv, strUserId);
+        //});
+        document.getElementById('ExcelData').innerHTML = csv2table(csv);
+        strCsv = csv;
+    }
+
+    function readSheet(strSheetName) {
+        var worksheet = objWorkBook.Sheets[strSheetName]; // 这里我们只读取第一张sheet
+        var csv = XLSX.utils.sheet_to_csv(worksheet);
+        console.log(csv);
+        //var myType = typeof csv;
+        //console.log("myType:", myType);
+        //var strUserId = "pyf-Test";
+        //var a = 3;
+        //var b = 4;
+
+        //require(["../js/TS/L3_ForWApiEx/BaseInfo/clsTeacherInfoExWApi.js"], function (teacherinfo) {
+        //    teacherinfo.clsTeacherInfoExWApi.ImportDataFromCsv(csv, strUserId);
+        //});
+        document.getElementById('ExcelData').innerHTML = csv2table(csv);
+        strCsv = csv;
+    }
+
+
+    // 将csv转换成表格
+    function csv2table(csv) {
+        var html = '<table>';
+        var rows = csv.split('\n');
+        rows.pop(); // 最后一行没用的
+        rows.forEach(function (row, idx) {
+            var columns = row.split(',');
+            columns.unshift(idx + 1); // 添加行索引
+            //if (idx == 0) { // 添加列索引
+            //    html += '<tr> ';
+            //    for (var i = 0; i < columns.length; i++) {
+            //        html += '<th>' + (i == 0 ? '' : String.fromCharCode(65 + i - 1)) + '</th>';
+            //    }
+            //    html += '</tr>';
+            //}
+            html += '<tr>';
+            columns.forEach(function (column) {
+                html += '<td>' + column + '</td>';
+            });
+            html += '</tr>';
+        });
+        html += '</table>';
+        return html;
+    }
+</script>
+<script>
+//以下是备用的内容--2022-11-22
+// 将一个sheet转成最终的excel文件的blob对象，然后利用URL.createObjectURL下载
+function sheet2blobBak(sheet, sheetName)
+{
+sheetName = sheetName || 'sheet1';
+var workbook = {
+SheetNames: [sheetName],
+Sheets: {}
+};
+workbook.Sheets[sheetName] = sheet;
+// 生成excel的配置项
+var wopts = {
+bookType: 'xlsx', // 要生成的文件类型
+bookSST: false, // 是否生成Shared String Table，官方解释是，如果开启生成速度会下降，但在低版本IOS设备上有更好的兼容性
+type: 'binary'
+};
+var wbout = XLSX.write(workbook, wopts);
+var blob = new Blob([s2ab(wbout)], { type: "application/octet-stream" });
+// 字符串转ArrayBuffer
+function s2ab(s)
+{
+var buf = new ArrayBuffer(s.length);
+var view = new Uint8Array(buf);
+for (var i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
+return buf;
+}
+return blob;
+}
+@*/**
+* 通用的打开下载对话框方法，没有测试过具体兼容性
+* @param url 下载地址，也可以是一个blob对象，必选
+* @param saveName 保存文件名，可选
+*/*@
+function openDownloadDialogBak(url, saveName)
+{
+if (typeof url == 'object' && url instanceof Blob) {
+url = URL.createObjectURL(url); // 创建blob地址
+}
+var aLink = document.createElement('a');
+aLink.href = url;
+aLink.download = saveName || ''; // HTML5新增的属性，指定保存文件名，可以不要后缀，注意，file:///模式下不会生效
+var event;
+if (window.MouseEvent) event = new MouseEvent('click');
+else {
+event = document.createEvent('MouseEvents');
+event.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+}
+aLink.dispatchEvent(event);
+}
+//所有用户自定义的JS函数建议都放在这里
+function exportSpecialExcel_pyf(arrData, strFileName)
+{
+var sheet = XLSX.utils.aoa_to_sheet(arrData);
+    openDownloadDialog(sheet2blob(sheet), strFileName);
+}
+</script>
+
+
+<div id="divLoading" class="loading">
+    <img src="~/images/CirclePoint.gif" />
+</div>
+<a id="backtop" class="back-top" href="javascript:scroll(0,0);" target="_self" title="返回顶部" style="display: block;">
+    <i class="icon-backtop"></i>
+</a>
+<div id="tabLayout" class="tab_layout">
+    @*-- 标题层 --*@
+    <div class="x-nav">
+        <span class="layui-breadcrumb">
+            <a href="">首页</a>
+            <a href="">题库</a>
+            <a>
+                <cite>
+                    <span id="lbltitle" name="lbltitle">题目维护</span>
+                </cite>
+            </a>
+            <Label id="lblMsg_List" name="lblMsg_List"></Label>
+        </span>
+        <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" onclick="Refresh_Click()" title="刷新">
+            <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i>
+        </a>
+        @*<a class="layui-btn layui-btn-small layui-btn-warm" style="line-height:1.6em;margin:0px 5px 0px 5px;float:right" onclick="PaperQA_Click()" title="论文答疑">
+                <i class="layui-icon layui-icon-survey" style="line-height:32px"></i>论文答疑
+            </a>
+            <a class="layui-btn layui-btn-small layui-btn-normal" style="line-height:1.6em;margin:0px 5px 0px 5px;float:right" onclick="PaperRead_Click()" title="论文观点(阅读)">
+                <i class="layui-icon layui-icon-read" style="line-height:30px"></i>论文观点(阅读)
+            </a>
+            <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin:0px 5px 0px 5px;float:right" onclick="MyPaper_Click()" title="我的论文">
+                <i class="layui-icon layui-icon-username" style="line-height:30px"></i>我的论文
+            </a>*@
+
+
+
+    </div>
+    @*-- 查询层 --*@
+
+    <div id="divQuery" class="div_query">
+        <table id="tabEdit" style="width:30%" class="table table-bordered table-hover table td table-sm">
+            <tr>
+
+                <td class="text-left">
+                    <input id="txtQuestionName_q" name="txtQuestionName_q" placeholder="题目名称" class="layui-input" style="width:250px;" />
+                </td>
+
+                <td class="text-left">
+                    <select id="ddlCourseChapterId_q" name="ddlCourseChapterId_q" class="form-control" style="width:200px;"></select>
+                </td>
+                <td class="text-left">
+                    <select id="ddlQuestionTypeId_q" name="ddlQuestionTypeId_q" class="form-control" style="width:150px;"></select>
+                </td>
+                <td class="text-left">
+                    <select id="ddlDifficultyLevelId_q" name="ddlDifficultyLevelId_q" class="form-control" style="width:150px;"></select>
+                </td>
+
+                <td class="text-left">
+                    <select id="ddlLevelModeTypeId_q" name="ddlLevelModeTypeId_q" class="form-control" style="width:150px;"></select>
+                </td>
+                <td class="text-right">
+                    <Label id="lblIsTest_q" name="lblIsTest_q" class="col-form-label text-right" style="width:90px;">
+                        是否测试
+                    </Label>
+                </td>
+                <td class="text-left">
+                    <select id="ddlIsTest_q" name="ddlIsTest_q" class="form-control" style="width:100px;"></select>
+                </td>
+                <td class="text-left">
+                    <button id="btnQuery" name="btnQuery" class="layui-btn" lay-submit="" lay-filter="sreach" onclick="btn_Click('Query')">
+                        <i class="layui-icon">&#xe615;</i>
+                    </button>
+                    @*<button id="btnQuery" name="btnQuery" class="btn btn-outline-info btn-sm text-nowrap" onclick="btn_Click('Query')">查询</button>*@
+                </td>
+                <td class="text-left">
+                    <button id="btnExportExcel" name="btnExportExcel" class="btn btn-outline-warning btn-sm text-nowrap" onclick="btn_Click('ExportExcel')">导出Excel</button>
+                </td>
+                    <td class="nav-item ml-2">
+                <button id="btnImportDataFromExcel" name="btnImportDataFromExcel" class="btn btn-outline-warning btn-sm text-nowrap" onclick="btn_Click('ImportDataFromExcel')">导入Excel</button>
+            </td>
+            </tr>
+            <tr>
+                <td colspan=8>
+                     <div id="divImportExcel" class="table table-bordered table-hover" style="display:none">
+        <ul class="nav">
+
+            <li class="nav-item ml-3">
+                <input type="file" id="ExcelFile" style="display:none;" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+                <a href="javascript:selectFile()">选择Excel</a>
+
+            </li>
+            <li class="nav-item ml-3">
+                <select id="ddlSheetName" name="ddlSheetName" class="form-control-sm" style="width:100px;"></select>
+            </li>
+
+              <li class="nav-item ml-3">
+            题目类型
+            </li>
+
+            <li class="nav-item ml-3">
+                     <select id="ddlQuestionTypeId" name="ddlQuestionTypeId" class="form-control" style="width:150px;"></select>
+            </li>
+
+
+            <li class="nav-item ml-3">
+                <button id="btnImportData" name="btnImportData" class="btn btn-outline-warning btn-sm text-nowrap" onclick="btn_Click('ImportData')">导入数据</button>
+            </li>
+
+            <li class="nav-item ml-3">
+                <button id="btnCloseExcelDiv" name="btnCloseExcelDiv" class="btn btn-outline-warning btn-sm text-nowrap" onclick="btn_Click('CloseExcelDiv')">关闭</button>
+            </li>
+            <li class="nav-item ml-3">
+                <button id="btnDownLoadSample" name="btnDownLoadSample" class="btn btn-outline-warning btn-sm text-nowrap" onclick="btn_Click('DownLoadSample')">下载样例</button>
+            </li>
+
+        </ul>
+        <div id="ExcelData"></div>
+
+    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    @*-- 功能区 --*@
+
+
+
+    @*-- 列表层 --*@
+    <div id="divList" class="div_List" style="background-color:#FFF;">
+        <div id="divDataLst">
+        </div>
+        <div id="divPager" class="pager">
+        </div>
+    </div>
+    @*-- 编辑层 --*@
+    <div id="divEdit" value="1"></div>
+</div>
+<input id="hidOpType" type="hidden" />
+<input id="hidKeyId" type="hidden" />
+<input id="hidCurrPageIndex" type="hidden" value="1" />
+<input id="hidSortQuestionnaireBy" type="hidden" value="" />
+
+
+<input id="hidCriteriaIdKeyId" type="hidden" />
+<!-- 题目Id -->
+<input id="hidQuestionID" type="hidden" />
+
+<input id="hidOrderNum" type="hidden" />
+
+<input id="hidQuestionTypeId" type="hidden" />

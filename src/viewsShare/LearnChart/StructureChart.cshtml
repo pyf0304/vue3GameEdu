@@ -1,0 +1,562 @@
+﻿@page
+@{
+    Layout = "~/Pages/Shared/_Layout_PC.cshtml";
+    ViewData["Title"] = "知识结构图";
+}
+@section Styles{
+
+    <link rel="stylesheet" href="../lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/lib/Xadmin/css/font.css">
+    <link rel="stylesheet" href="~/lib/Xadmin/css/xadmin.css">
+    <link rel="stylesheet" href="~/css/public.css" />
+
+    <link type="text/css" rel="stylesheet" href="~/lib/jsmind/jsmind.css" />
+    <link rel="stylesheet" type="text/css" href="~/lib/jsPlumb/css/style.css">
+
+    <style type="text/css">
+
+        #jsmind_container {
+            width: 100%;
+            height: 800px;
+            border: solid 1px #ccc;
+            /*background:#f4f4f4;*/
+            /*background: #f4f4f4;*/
+        }
+
+        #ulGraph li {
+            list-style: none;
+            line-height: 18px;
+        }
+
+        .layui-tab-title .layui-this {
+            /*color: #000;*/
+            /*color: #24998d;*/
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            background-color: cadetblue;
+        }
+
+        .device {
+            margin: 0px;
+        }
+
+            .device .deviceLeft {
+                width: 280px;
+                height: 750px;
+                background-color: white;
+                /*border-right: 1px solid #ccc;*/
+                float: left;
+                /* overflow: auto; */
+                overflow-y: no-display;
+            }
+
+            .device .deviceRight {
+                position: absolute;
+                right: 0;
+                width: calc(100% - 280px);
+                min-height: 740px;
+                /*width: 800px;*/
+                /*width: 1000px;*/
+                /*overflow: auto;*/
+                overflow: scroll;
+                /*height: 100%;*/
+                box-sizing: border-box;
+                /*background: url(../images/bg1.png);*/
+            }
+    </style>
+    @*<link href="~/css/font-awesome.min.css" rel="stylesheet" type="text/css">*@
+
+
+}
+@section Scripts{
+
+
+
+
+    <script src="../lib/jquery/dist/jquery.js"></script>
+
+    <script src="~/lib/Xadmin/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="~/lib/Xadmin/js/xadmin.js"></script>
+
+    <script src="../lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="~/lib/bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="~/lib/jsmind/jsmind.js"></script>
+    <script type="text/javascript" src="~/lib/jsmind/jsmind.draggable.js"></script>
+    <script type="text/javascript" src="~/lib/jsmind/jsmind.screenshot.js"></script>
+
+    <script src="../lib/require/require.js" data-main="../js/src/config"></script>
+}
+
+<script>
+    window.onload = function () {
+        //timeShow();
+        //setInterval(timeShow, 1000);
+
+        //open_empty();
+        //load_jsmind();
+        //GetRequestId_PageLoad();
+        //require(["../js/Knowledges/StructureChart.js"], function (StructureChart) {
+        //    var objPage = new StructureChart.StructureChart();
+        //    objPage.Page_Load();
+        //});
+        GetRequestId_PageLoad();
+    }
+
+
+    function GetRequest() {
+        var url = location.search; //获取url中"?"符后的字串
+        var theRequest = new Object();
+        if (url.indexOf("?") != -1) {
+            var str = url.substr(1);
+            strs = str.split("&");
+            for (var i = 0; i < strs.length; i++) {
+                theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+            }
+        }
+        return theRequest;
+    }
+
+
+    function GetRequestId_PageLoad() {
+        var Request = new Object();
+        Request = GetRequest();
+
+        var strQuestionID = Request['questionID'];//题目Id
+        var strStructureGraphId = Request['StructureGraphId'];//结构图谱Id
+        var strSectionTypeId = Request['SectionTypeId'];//章节类型Id
+        var strGameLevelId = Request['GameLevelId'];//关卡Id
+
+
+        $('#hidQuestionID').val(strQuestionID);
+        $('#hidStructureGraphId').val(strStructureGraphId);
+        $('#hidSectionTypeId').val(strSectionTypeId);
+        $('#hidGameLevelId').val(strGameLevelId);
+
+        require(["../js/Knowledges/StructureChart.js"], function (StructureChart) {
+            var objPage = new StructureChart.StructureChart();
+            objPage.Page_Load();
+        });
+
+
+    }
+
+
+    var _jm = null;
+    //加载结构图
+    function load_jsmind(strjson) {
+        //var mind = {
+        //    "meta": {
+        //        "name": "demo",
+        //        "author": "77240613@qq.com",
+        //        "version": "0.2",
+        //    },
+        //    "format": "node_array",
+        //    "data": [
+        //        { "id": "root", "isroot": true, "topic": "父节点" },
+
+        //        { "id": "sub1", "parentid": "root", "topic": "sub1", "background-color": "#0000ff" },
+        //        { "id": "sub11", "parentid": "sub1", "topic": "sub11" },
+        //        { "id": "sub12", "parentid": "sub1", "topic": "sub12" },
+        //        { "id": "sub13", "parentid": "sub1", "topic": "sub13" },
+
+        //        { "id": "sub2", "parentid": "root", "topic": "sub2" },
+        //        { "id": "sub21", "parentid": "sub2", "topic": "sub21" },
+        //        { "id": "sub22", "parentid": "sub2", "topic": "sub22", "foreground-color": "#33ff33" },
+
+        //        { "id": "sub3", "parentid": "root", "topic": "sub3" },
+        //    ]
+        //};
+
+        var mind = {
+            "meta": {
+                "name": "demo",
+                "author": "neyo",
+                "version": "0.1",
+            },
+            "format": "node_array",
+            "data": strjson
+        };
+
+        var options = {
+            container: 'jsmind_container',
+            editable: true,
+            theme: 'greensea',
+            mode: 'side'
+
+        }
+        _jm = null;
+
+        $("#jsmind_container").html("");
+        _jm = jsMind.show(options, mind);
+        //_jm = jsMind.show(options);
+
+        // jm.set_readonly(true);
+        // var mind_data = jm.get_data();
+        // alert(mind_data);
+
+
+        //_jm.add_node("sub2", "sub23", "new node", { "background-color": "red" });
+        //_jm.set_node_color('sub21', 'green', '#ccc');
+    }
+
+
+
+    //function open_empty() {
+    //    var options = {
+    //        container: 'jsmind_container',
+    //        theme: 'greensea',
+    //        editable: true
+    //    }
+    //    _jm = jsMind.show(options);
+    //    // _jm = jsMind.show(options,mind);
+    //}
+
+    function get_selected_nodeid() {
+        var selected_node = _jm.get_selected_node();
+        if (!!selected_node) {
+            return selected_node.id;
+        } else {
+            return null;
+        }
+    }
+
+    //添加节点到接口
+    //function add_node_StructureChart() {
+    //    var selected_node = _jm.get_selected_node(); // as parent of new node
+    //    if (!selected_node) { prompt_info('please select a node first.'); return; }
+    //    var strParentId = selected_node.id;
+
+    //    require(["../js/Knowledges/StructureChart.js"], function (structureChart) {
+    //        var objPage = new structureChart.StructureChart();
+    //        objPage.AddStructureChart(strParentId);
+    //    });
+    //}
+    //添加节点到接口
+    function SectionAddNode_Click(strKeyId, strKeyName) {
+        var selected_node = _jm.get_selected_node(); // as parent of new node
+        if (!selected_node) {
+            layui_Alert(3, "请选中父节点！")
+            prompt_info('please select a node first.');
+            return;
+        }
+        var strParentId = selected_node.id;
+
+        require(["../js/Knowledges/StructureChart.js"], function (structureChart) {
+            var objPage = new structureChart.StructureChart();
+            objPage.AddStructureChart(strParentId, strKeyId, strKeyName);
+            $('#' + strKeyId).remove();
+        });
+
+    }
+
+
+
+    //添加节点
+    function add_node(strKeyId, strKeyName) {
+        var selected_node = _jm.get_selected_node(); // as parent of new node
+        if (!selected_node) {
+
+            prompt_info('please select a node first.');
+            return;
+        }
+        var nodeid = strKeyId;
+        var topic = strKeyName;
+        var node = _jm.add_node(selected_node, nodeid, topic);
+        message.success( "添加节点成功！")
+        //console.log(node);
+    }
+
+    //删除节点
+    function remove_node_StructureChart() {
+        var selected_id = get_selected_nodeid();
+        if (!selected_id) {
+            layui_Alert(3, "请选中需要删除的节点！")
+            prompt_info('please select a node first.');
+            return;
+        }
+
+        require(["../js/Knowledges/StructureChart.js"], function (structureChart) {
+            var objPage = new structureChart.StructureChart();
+            objPage.StructureChart_DelRecord(selected_id);
+        });
+    }
+    //删除节点
+    function remove_node() {
+        var selected_id = get_selected_nodeid();
+        if (!selected_id) { prompt_info('please select a node first.'); return; }
+
+        _jm.remove_node(selected_id);
+        message.success( "删除节点成功！")
+        //console.log(selected_id);
+    }
+
+    //保存结构图
+    function save_node() {
+        //var mind_data = _jm.get_data();
+        //var mind_string = jsMind.util.json.json2string(mind_data);
+        //prompt_info(mind_string);
+        var mind_data = _jm.get_data('node_array');
+        var mind_string = jsMind.util.json.json2string(mind_data);
+        console.log(mind_string);
+        //prompt_info(mind_string);
+    }
+
+    //提交节点
+    function Submit_node_Click() {
+
+        require(["../js/Knowledges/StructureChart.js"], function (structureChart) {
+            var objPage = new structureChart.StructureChart();
+            objPage.Submit_node_Click();
+        });
+    }
+
+
+    //信息提示
+    function layui_Alert(iconKey, strMsg) {
+
+        layer.msg(strMsg, {
+            icon: iconKey,
+            time: 1000
+        });
+    }
+
+    function btn_Click(strCommandName, strKeyId) {
+        require(["../js/Knowledges/StructureChart.js"], function (structureChart) {
+            structureChart.StructureChart.btn_Click(strCommandName, strKeyId);
+        });
+    }
+
+    //点击图列表显示图谱详情
+    function GraphMenu_Click(strKey, strName, strSectionTypeId) {
+
+        $("#hidStructureGraphId").val(strKey);
+        $("#hidSectionTypeId").val(strSectionTypeId);
+
+        //$("#navGraphName").html(strName);
+        //先清除背景色
+        //$("#ulGraph li a").removeClass("active");
+        ////添加背景色
+        //strKey = "Graph" + strKey;
+        //$("#" + strKey).addClass("active");
+        //让图谱面板清空
+        require(["../js/Knowledges/StructureChart.js"], function (structureChart) {
+            var objPage = new structureChart.StructureChart();
+            objPage.BindGv_ge_StructureChartNode();
+        });
+    }
+
+    //绑定结构章节
+    function li_ge_StructureSection_Click() {
+        require(["../js/Knowledges/StructureChart.js"], function (structureChart) {
+            var objPage = new structureChart.StructureChart();
+            objPage.BindGv_ge_StructureSection();
+        });
+    }
+
+    //补0操作
+    function toDub(n) {
+        if (n < 10) {
+            return "0" + n;
+        }
+        else {
+            return "" + n;
+        }
+    }
+
+    var now = new Date();
+    //时间显示
+    //var timeShow = function () {
+    function timeShow() {
+        var t = new Date();
+        t.setFullYear(t.getFullYear() - now.getFullYear());
+        t.setMonth(t.getMonth() - now.getMonth());
+        t.setDate(t.getDate() - now.getDate());
+        t.setHours(t.getHours() - now.getHours());
+        t.setMinutes(t.getMinutes() - now.getMinutes());
+        t.setSeconds(t.getSeconds() - now.getSeconds());
+        //document.getElementById('show').innerHTML = t.getHours() + '小时' + t.getMinutes() + '分钟' + t.getSeconds() + '秒';
+        document.getElementById('TimeShow').innerHTML = toDub(t.getMinutes()) + ':' + toDub(t.getSeconds());
+    }
+
+    //启动时间显示
+    function setTimeShow() {
+        timeShow();
+        setInterval(timeShow, 1000);
+    }
+
+
+    //xadmin.open('添加概念', '../GraduateEduTopic/Pdfiframe?PageType=03&TopicId=' + strKeyId + '&Id_CurrEduCls=' + strId_CurrEduCls, '', '', true);
+
+    function CorrectStructureChart_Click() {
+        var strSectionTypeId = $("#hidSectionTypeId").val();
+
+        xadmin.open('查看正确结构图', '../Knowledges/StructureSection?SectionTypeId=' + strSectionTypeId);
+    }
+
+    function Show_TimeShow() {
+
+        var Span_nav_title = document.getElementById("nav_title");
+        var a1 = document.createElement("a");
+        a1.title = "时间";
+        a1.id = "TimeShow";
+        Span_nav_title.appendChild(a1);
+    }
+
+    function Show_nav_title() {
+
+        var Span_nav_title = document.getElementById("nav_title");
+        var a1 = document.createElement("a");
+        a1.title = "耗时";
+        a1.id = "a_TakeUpTime";
+        Span_nav_title.appendChild(a1);
+
+        var a1 = document.createElement("a");
+        a1.title = "正确数";
+        a1.id = "a_CorrectNum";
+        Span_nav_title.appendChild(a1);
+
+        var a1 = document.createElement("a");
+        a1.title = "错误数";
+        a1.id = "a_ErrorNum";
+        a1.style.color = "red";
+        Span_nav_title.appendChild(a1);
+
+        var a1 = document.createElement("a");
+        a1.title = "分数";
+        a1.id = "a_Fraction";
+        Span_nav_title.appendChild(a1);
+
+    }
+
+
+    //function Hide_nav_title() {
+
+    //    $("#a_TimeShow").remove();
+    //    $("#a_TimeShow").remove();
+    //    $("#a_TimeShow").remove();
+    //    $("#a_TimeShow").remove();
+    //}
+
+</script>
+
+
+@*<div id="divLoading" class="loading">
+        <img src="~/images/CirclePoint.gif" />
+    </div>*@
+
+
+@*<div id="tabLayout">*@
+@*-- 标题层 --*@
+<div class="x-nav">
+    <span id="nav_title" class="layui-breadcrumb">
+        @*<a href="">首页</a>
+            <a href="">个人中心</a>*@
+        @*<a id="a_TimeShow">
+                <cite id="TimeShow">00:00</cite>
+            </a>
+            <a title="耗时" id="a_TakeUpTime"></a>
+            <a title="正确数" id="a_CorrectNum"></a>
+            <a title="错误数" id="a_ErrorNum"></a>
+            <a title="分数" id="a_Fraction"></a>*@
+
+
+        @*  <a>(功能说明：选中结构图谱下面的图谱名称可以切换结构图，旁边的加号可以添加图谱。选中图中的根节点以后，再点击左边的(结构章节)就可以添加到结构图中！)</a>*@
+    </span>
+
+
+    @*<a class="layui-btn layui-btn-small" style="line-height:34px;margin-top:3px;float:right" onclick="location.reload()" title="刷新">
+            <i class="layui-icon layui-icon-refresh" style="line-height:34px"></i>
+        </a>*@
+    <a id="btn_CorrectStructureChart" onclick="CorrectStructureChart_Click()" class="layui-btn layui-btn-normal" style="display:none; line-height:34px;float:right; margin-right:10px;" title="提交结构图">
+        <i class="layui-icon layui-icon-file-b" style="line-height:34px"></i>查看正确结构图
+    </a>
+    <a id="btn1" onclick="Submit_node_Click()" class="layui-btn layui-btn-normal" style="line-height:34px;float:right; margin-right:10px;" title="提交结构图">
+        <i class="layui-icon layui-icon-file-b" style="line-height:34px"></i>提交
+    </a>
+    <a id="btn3" onclick="remove_node_StructureChart()" class="layui-btn layui-btn-danger" style="line-height:34px;float:right; margin-right:10px;" title="删除节点">
+        <i class="layui-icon layui-icon-delete" style="line-height:34px"></i>删除
+    </a>
+    @*<a id="btn2" onclick="add_node_StructureChart()" class="layui-btn layui-btn-warm" style="line-height:1.6em;margin-top:3px;float:right; margin-right:10px;" title="添加节点">
+            <i class="layui-icon ayui-icon-add-circle" style="line-height:30px"></i>添加节点
+        </a>*@
+
+</div>
+
+<div class="device">
+
+    <div class="deviceLeft">
+        @*<ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#menu1">结构图谱</a>
+                    <i id="i_AddGraph" title="添加结构图谱" onclick="btn_Click('AddNewRecordWithMaxId')" class="layui-icon layui-icon-add-1" style="font-size:20px; color: #24998d; float:right"></i>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#menu2">结构章节</a>
+                </li>
+            </ul>
+
+            <div class="tab-content">
+                <div id="menu1" class="container tab-pane active">
+                    <ul id="ulGraph" class="nav nav-pills flex-column" role="tablist"></ul>
+
+                </div>
+                <div id="menu2" class="container tab-pane fade">
+                    <div id="StructureChartTitle" class="deviceLeft_box">
+                    </div>
+                </div>
+            </div>*@
+        <div class="layui-tab" style="margin: 1px 0;">
+            <ul class="layui-tab-title">
+
+                <li class="layui-this" id="TabGraph2_Menu" onclick="li_ge_StructureSection_Click()">结构章节</li>
+                <li style="display:none;">
+                    结构图谱
+                    <i id="i_AddGraph" title="添加结构图谱" onclick="btn_Click('AddNewRecordWithMaxId')" class="layui-icon layui-icon-add-1" style="font-size:20px; color: #ff6a00; display:none;"></i>
+                </li>
+            </ul>
+            <div class="layui-tab-content" style="padding:5px;">
+
+                <div class="layui-tab-item layui-show">
+                    <div class="device" style="margin:0px;">
+                        <div id="deviceLeft" class="deviceLeft" style="width:100%;">
+
+                            <div id="StructureSectionNode" class="deviceLeft_box">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-tab-item" style="display:none;">
+                    <ul id="ulGraph" class="nav nav-pills flex-column" role="tablist"></ul>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+    <div id="deviceRight" class="deviceRight">
+        <div id="jsmind_container"></div>
+    </div>
+</div>
+
+@*-- 编辑层 --*@
+<div id="divEdit" value="1"></div>
+<input id="hidOpType" type="hidden" />
+<input id="hidKeyId" type="hidden" />
+
+@*<input id="hidLogicNodeJson" type="hidden" />
+    <input id="hidLogicRelaJson" type="hidden" />*@
+
+<input id="hidQuestionID" type="hidden" />
+
+<input id="hidStructureGraphId" type="hidden" />
+
+<input id="hidSectionTypeId" type="hidden" />
+
+<input id="hidGameLevelId" type="hidden" />
+
+@*<input id="hidChangeBg" type="hidden" />*@
+@*</div>*@

@@ -1,0 +1,325 @@
+﻿@page
+@{
+    Layout = "~/Pages/Shared/_Layout_PC.cshtml";
+    ViewData["Title"] = "逻辑关系图";
+}
+@section Styles{
+
+    @*<link rel="stylesheet" href="../lib/bootstrap/dist/css/bootstrap.css" />*@
+    @*<link rel="stylesheet" href="../lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />*@
+    <link rel="stylesheet" href="~/lib/Xadmin/css/font.css">
+    <link rel="stylesheet" href="~/lib/Xadmin/css/xadmin.css">
+    <link rel="stylesheet" href="~/css/public.css" />
+
+    <link rel="stylesheet" type="text/css" href="~/lib/jsPlumb/css/jquery-ui.min.css">
+    <link rel="stylesheet" type="text/css" href="~/lib/jsPlumb/css/style.css">
+
+    @*<link href="~/css/font-awesome.min.css" rel="stylesheet" type="text/css">*@
+    <style>
+        .ChapterName {
+            width: 258px;
+            height: 40px;
+            font-weight: bold;
+            color: red;
+            line-height: 40px;
+            font-size: 15px;
+        }
+    </style>
+
+}
+@section Scripts{
+
+    <script src="../lib/require/require.js" data-main="../js/src/config"></script>
+
+
+    <script src="../lib/jquery/dist/jquery.js"></script>
+
+    <script src="~/lib/Xadmin/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="~/lib/Xadmin/js/xadmin.js"></script>
+    @*<script src="../lib/jquery/dist/jquery.js"></script>*@
+    @*<script src="../lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/lib/bootstrap.min.js"></script>*@
+
+
+    @*<script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>*@
+    <script type="text/javascript" src="~/lib/jsPlumb/js/jquery-ui.min.js"></script>
+    @*<script type="text/javascript" src="~/lib/jsPlumb/js/jquery.jsPlumb.min.js"></script>*@
+    @*潘以锋*@
+    <script type="text/javascript" src="~/lib/jsPlumb/js/jsplumb.js"></script>
+
+    <script type="text/javascript" src="~/lib/jsPlumb/js/index.js"></script>
+
+    <script>
+
+        function LoadKnowledge() {
+            Load_Knowledge()
+        }
+        function DragDeviceLeft() {
+            Drag_deviceLeft()
+        }
+
+    </script>
+}
+
+<script>
+
+    window.onload = function () {
+        GetRequestId_PageLoad();
+    }
+
+    function GetRequest() {
+        var url = location.search; //获取url中"?"符后的字串
+        var theRequest = new Object();
+        if (url.indexOf("?") != -1) {
+            var str = url.substr(1);
+            strs = str.split("&");
+            for (var i = 0; i < strs.length; i++) {
+                theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+            }
+        }
+        return theRequest;
+    }
+
+
+    function GetRequestId_PageLoad() {
+        var Request = new Object();
+        Request = GetRequest();
+
+        var strKnowledgeGraphId = Request['KnowledgeGraphId'];
+        var strstate = Request['state'];
+
+
+        if (strKnowledgeGraphId != null) {
+            $('#hidKnowledgeGraphId').val(strKnowledgeGraphId);
+            $('#hidstate').val(strstate);
+            require(["../js/Knowledges/LogicRela.js"], function (LogicRela) {
+                var objPage = new LogicRela.LogicRela();
+                objPage.Page_Load();
+            });
+        }
+
+    }
+
+    function LoadjsPlumb() {
+        require(["../lib/jsPlumb/js/index.js"], function (LogicRela) {
+        });
+    }
+
+    //保存逻辑关系
+    function SaveLogicRela(ojson) {
+
+        console.log("保存关系json");
+
+        if (ojson.server.length == 0) {
+            Alert_layer(2, "请建立关系连接然后再保存!");
+        } else {
+            require(["../js/Knowledges/LogicRela.js"], function (LogicRela) {
+                var objPage = new LogicRela.LogicRela();
+                objPage.btnSaveLogicRela_Click(ojson);
+            });
+        }
+    }
+
+    //function RefreshKnowledgeTitle(key) {
+    //    $('#' + key).remove();
+    //}
+
+    //function RefreshKnowledgeTitle(ojson) {
+
+    //    LoadjsPlumb();
+    //    //require(["../js/Knowledges/LogicRela.js"], function (LogicRela) {
+    //    //    var objPage = new LogicRela.LogicRela();
+    //    //    objPage.RefreshKnowledgeTitle(ojson);
+    //    //});
+    //}
+
+    function Alert_layer(strIcon, strMsg) {
+
+        layer.msg(strMsg, {
+            icon: strIcon,
+            time: 2000
+        });
+    }
+
+
+    function ChangeBg_Click(key) {
+
+        $("#lblKnowledgesTitle").show();
+        $('#hidChangeBg').val(key);
+        var strKnowledgesTitle = $("#" + key).html();
+        $("#lblKnowledgesTitle").html("知识点：" + strKnowledgesTitle);
+        //$("#" + key).removeClass();
+        //添加背景色
+        //var strBgColor = "node node6css server ui-draggable ui-droppable _jsPlumb_endpoint_anchor_";
+        //$("#" + key).addClass(strBgColor);
+        $("#btn2").show();
+        $("#btn3").show();
+        $("#btn4").show();
+    }
+
+    //初步掌握
+    //function Preliminary_Click() {
+    //    var key = $('#hidChangeBg').val();
+    //    $("#" + key).removeClass();
+    //    //添加背景色
+    //    var strBgColor = "node node2css server ui-draggable ui-droppable _jsPlumb_endpoint_anchor_";
+    //    $("#" + key).addClass(strBgColor);
+
+    //    $("#lblKnowledgesTitle").hide();
+    //    $("#btn2").hide();
+    //    $("#btn3").hide();
+    //}
+
+
+    ////熟练掌握
+    //function Skilled_Click() {
+    //    var key = $('#hidChangeBg').val();
+    //    $("#" + key).removeClass();
+    //    //添加背景色
+    //    var strBgColor = "node node3css server ui-draggable ui-droppable _jsPlumb_endpoint_anchor_";
+    //    $("#" + key).addClass(strBgColor);
+
+    //    $("#lblKnowledgesTitle").hide();
+    //    $("#btn2").hide();
+    //    $("#btn3").hide();
+    //}
+
+    //掌握
+    function Master_Click(stataKey) {
+        var key = $('#hidChangeBg').val();
+        $("#" + key).removeClass();
+        var strBgColor = "node node" + stataKey + "css server ui-draggable ui-droppable _jsPlumb_endpoint_anchor_";
+        switch (stataKey) {
+            case 1:
+                $("#" + key).addClass(strBgColor);
+                break;
+            case 2:
+                $("#" + key).addClass(strBgColor);
+                break;
+            case 3:
+                //添加背景色
+                $("#" + key).addClass(strBgColor);
+                break;
+        }
+        $("#lblKnowledgesTitle").hide();
+        $("#btn2").hide();
+        $("#btn3").hide();
+        $("#btn4").hide();
+    }
+
+
+    //保存逻辑关系
+    function BindDdl_RelaTypeId() {
+        require(["../js/Knowledges/LogicRela.js"], function (LogicRela) {
+            var objPage = new LogicRela.LogicRela();
+            objPage.SetDdl_RelaTypeId();
+        });
+
+    }
+
+</script>
+
+
+<div id="divLoading" class="loading">
+    <img src="~/images/CirclePoint.gif" />
+</div>
+
+
+
+@*<div id="tabLayout">*@
+@*-- 标题层 --*@
+<div class="x-nav">
+    <span class="layui-breadcrumb">
+        <a href="">首页</a>
+        <a href="">个人中心</a>
+        <a>
+            <cite>逻辑关系图</cite>
+        </a>
+        <a>
+            <span id="nav_Title"></span>
+        </a>
+        <Label id="lblMsg_List" name="lblMsg_List"></Label>
+    </span>
+
+
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" onclick="location.reload()" title="刷新">
+        <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i>
+    </a>
+
+    <a id="btn1" class="layui-btn layui-btn-normal" style="line-height:1.6em;margin-top:3px;float:right; margin-right:10px;" title="保存关系图">
+        <i class="layui-icon layui-icon-file-b" style="line-height:30px"></i>保存关系图
+    </a>
+
+    <a id="btn3" onclick="Master_Click(3)" class="layui-btn layui-btn-danger" style="display:none; line-height:1.6em;margin-top:3px;float:right; margin-right:10px;" title="熟练掌握">
+        <i class="layui-icon layui-icon-star-fill" style="line-height:30px"></i>熟练掌握
+    </a>
+    <a id="btn2" onclick="Master_Click(2)" class="layui-btn layui-btn-warm" style="display:none; line-height:1.6em;margin-top:3px;float:right; margin-right:10px;" title="初步掌握">
+        <i class="layui-icon layui-icon-star" style="line-height:30px"></i>初步掌握
+    </a>
+    <a id="btn4" onclick="Master_Click(1)" class="layui-btn layui-btn-normal" style="display:none; line-height:1.6em;margin-top:3px;float:right; margin-right:10px;" title="初步掌握">
+        <i class="layui-icon layui-icon-circle" style="line-height:30px"></i>未掌握
+    </a>
+    <Label id="lblKnowledgesTitle" name="lblKnowledgesTitle" style="display:none; line-height:30px;margin-top:3px;float:right; margin-right:10px; color:crimson;"></Label>
+    @*<button class="btn1"> console.log(JSON) </button>*@
+</div>
+
+
+
+
+
+<div class="device">
+    @*<button class="btn1"> console.log(JSON) </button>*@
+    <div id="deviceLeft" class="deviceLeft">
+
+        <h3>知识点</h3>
+        <div id="KnowledgesNode" class="deviceLeft_box">
+            @*<div class="node node1css" data-type="server">服务器21021321321321231</div>
+                <div class="node node1css" data-type="server">服务器2</div>
+                <div class="node node1css" data-type="server">服务器3</div>
+                <div class="node node1css" data-type="server">服务器4</div>
+                <div class="node node1css" data-type="server">服务器5</div>
+                <div class="node node1css" data-type="server">服务器6</div>
+                <div class="node node1css" data-type="server">服务器7</div>
+                <div class="node node1css" data-type="server">服务器8</div>
+                <div class="node node1css" data-type="server">服务器9</div>
+                <div class="node node1css" data-type="server">服务器10</div>*@
+            @*<div class="node node2css" data-type="host">主机</div>
+                <div class="node node3css" data-type="aisle">通道</div>
+                <div class="node node1css" data-type="server">服务器</div>
+                <div class="node node2css" data-type="host">主机</div>
+                <div class="node node3css" data-type="aisle">通道</div>*@
+        </div>
+        @*<h3>配置2</h3>
+            <div class="deviceLeft_box">
+                <div class="node node4css" data-type="route">路由</div>
+            </div>
+            <h3>配置3</h3>
+            <div class="deviceLeft_box">
+                <div class="node node5css" data-type="signal">信号3</div>
+            </div>
+            <h3>配置4</h3>
+            <div class="deviceLeft_box">
+                <div class="node node5css" data-type="signal">信号4</div>
+            </div>
+            <h3>配置5</h3>
+            <div class="deviceLeft_box">
+                <div class="node node5css" data-type="signal">信号5</div>
+            </div>*@
+    </div>
+    <div id="deviceRight" class="deviceRight">
+        <div id="main"></div>
+    </div>
+</div>
+
+<input id="hidLogicNodeJson" type="hidden" />
+<input id="hidLogicRelaJson" type="hidden" />
+
+
+<input id="hidKnowledgeGraphId" type="hidden" />
+
+<input id="hidChangeBg" type="hidden" />
+
+<input id="hidstate" type="hidden" />
+
+@*</div>*@

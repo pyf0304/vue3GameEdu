@@ -1,0 +1,74 @@
+.read-the-docs {
+  color: #888;
+}
+.arrow-neutral {
+  border: solid gray;
+  border-width: 0 2px 2px 0;
+  display: inline-block;
+  padding: 3px;
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+}
+/* 样式可根据实际情况自行调整 */
+.arrow-up {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid #000; /* 箭头向上，可根据需要设置颜色 */
+  margin-left: 5px;
+}
+
+.arrow-down {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid #000; /* 箭头向下，可根据需要设置颜色 */
+  margin-left: 5px;
+}
+
+th:not(:last-child) {
+  margin-right: 10px;
+  border-right: 1px solid #ccc;
+  background-color: rgba(0, 0, 255, 0.6);
+  color: white;
+  font-weight: bold;
+  padding: 2px; /* 添加内边距 */
+}
+
+th:last-child {
+  margin-right: 0; /* Reset margin for the last column */
+  border-right: none; /* Remove the border for the last column */
+  background-color: rgba(0, 0, 255, 0.6);
+  color: white;
+  font-weight: bold;
+  padding: 2px; /* 添加内边距 */
+}
+
+.Bakth:not(:last-child) {
+  margin-right: 10px; /* Adjust the value to control the spacing */
+  border-right: 1px solid #ccc; /* Adjust the color and width as needed */
+  background-color: #333; /* Adjust the color as needed */
+  color: #fff; /* Adjust the text color as needed */
+}
+
+td {
+  border-right: 1px solid #ccc; /* Adjust the color and width as needed */
+  padding: 2px; /* 添加内边距 */
+}
+
+tr:nth-child(odd) {
+  background-color: #f2f2f2; /* Adjust the color as needed for odd rows */
+}
+
+tr:nth-child(even) {
+  background-color: #ffffff; /* Adjust the color as needed for even rows */
+}
+/* 添加表格单元格之间的空隙 */
+table {
+  border-collapse: separate; /* 使用 separate 模式，允许单元格之间的空隙 */
+  border-spacing: 2px; /* 定义单元格之间的间距 */
+}

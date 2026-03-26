@@ -1,0 +1,45 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "useDefineForClassFields": true,
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "strict": true,
+    "allowJs": true,
+    "jsx": "preserve",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "lib": ["ESNext", "DOM"],
+    "skipLibCheck": true,
+    "noEmit": true,
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["src/*"],
+      "share-prj": ["./lib/share-prj.mjs"],
+      "share-stu-study-base-lib": ["./lib3/share-stu-study-base.mjs"],
+      "share-stu-study-base/*": ["./lib3/share-stu-study-base/src/*"],
+      "share-stu-study-base/types/*": ["./lib3/share-stu-study-base/src/types/*"],
+      "share-gen-plat-base-lib": ["./lib_gp/share-gen-plat-base.mjs"],
+      "share-gen-plat-base-lib/*": ["./lib_gp/share-gen-plat-base/src/*"],
+      "share-gen-plat-base-lib/types/*": ["./lib_gp/share-gen-plat-base/src/types/*"],
+      "@gp/*": ["share-gen-plat-base/src/*"],
+      "@ssb/*": ["share-stu-study-base/src/*"]
+    },
+    "typeRoots": [
+      "./node_modules/@types",
+      "./src/types",
+      "./types",
+      "share-stu-study-base/src/types/",
+      "share-gen-plat-base/src/types/"
+    ]
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "typings",
+    "types/global.d.ts"
+  ]
+}

@@ -1,0 +1,71 @@
+﻿@page
+@{
+    Layout = "";
+}
+@section Styles{
+<link rel="stylesheet" href="../lib/bootstrap/dist/css/bootstrap.css" />
+<link rel="stylesheet" href="../css/site.css" />
+}
+@section Scripts{
+<script src="../lib/jquery/dist/jquery.js"></script>
+<script src="../lib/bootstrap/dist/js/bootstrap.js"></script>
+<script src="../js/site.js" asp-append-version="true"></script>
+<script src="../lib/bootstrap/dist/js/popper.js"></script>
+<script src="../lib/require/require.js" data-main="../js/src/config"></script>
+}
+<script>
+         /*
+      按钮单击,用于调用Js函数中btnEdit_Click
+     (AutoGCLib.WA_ViewScript_Edit_TS4Html:Gen_WApi_JS_btnEdit_Click)
+     */
+    function btnEdit_Click(strCommandName, strKeyId) {
+       require(["../js/CommPage/TzMsgBoxEx.js"], function(tzmsgboxex) {
+    tzmsgboxex.TzMsgBoxEx.btnEdit_Click(strCommandName, strKeyId);
+    });
+    }
+
+
+     /*
+      显示对话框
+     (AutoGCLib.WA_ViewScript_Edit_TS4Html:Gen_WApi_JS_ShowDialog)
+     */
+    function ShowDialog(strDialogName) {
+       require(['jquery', 'bootstrap'], function($) {
+     $(strDialogName).modal('show');
+      });
+    }
+
+     /*
+      隐藏对话框
+     (AutoGCLib.WA_ViewScript_Edit_TS4Html:Gen_WApi_JS_HideDialog)
+     */
+    function HideDialog(strDialogName) {
+      require(['jquery', 'bootstrap'], function($) {
+          $(strDialogName).modal('hide');
+      });
+    }
+
+</script>
+<div id="tabLayout" class="tab_layout">
+    @*-- 编辑层 --*@
+
+    <div class="modal fade" id="divMsgDialog_GameLevel" tabindex="-1" role="dialog" aria-labelledby="lblDialogTitle_GameLevel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="width: 1000px;">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="lblDialogTitle_GameLevel">模态框（Modal）标题</h4>
+                    <button type="button" class="close" data-dismiss="modal" onclick="btnEdit_Click('CloseReturn')" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div id="divInfo"></div>                 
+                </div>
+                <div class="modal-footer">
+                    @*<button  id="btnCancel" type="button" class="btn btn-default" data-dismiss="modal">关闭</button>*@
+                    <button id="btnCloseReturn" type="button" class="btn btn-primary" onclick="btnEdit_Click('CloseReturn')">关闭</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal -->
+    </div>
+</div>

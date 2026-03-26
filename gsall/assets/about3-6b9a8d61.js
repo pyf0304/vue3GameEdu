@@ -1,0 +1,1 @@
+import{d as t,_ as n,b as o,c as s,g as a}from"./index-19a721c2.js";const r=t({name:"AboutPyf3",setup(){return{}}});function p(c,e,u,d,f,i){return o(),s("div",null,e[0]||(e[0]=[a("span",null," this a about3 page!",-1)]))}const _=n(r,[["render",p]]);export{_ as A};

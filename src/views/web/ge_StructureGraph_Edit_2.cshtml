@@ -1,0 +1,96 @@
+﻿
+@page
+@{
+    Layout = "";
+}
+@section Styles{
+    <link rel="stylesheet" href="../lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="../css/site.css" />
+}
+@section Scripts{
+    <script src="../lib/jquery/dist/jquery.js"></script>
+    <script src="../lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="../js/site.js" asp-append-version="true"></script>
+    <script src="../lib/bootstrap/dist/js/popper.js"></script>
+    <script src="../lib/require/require.js" data-main="../js/src/config"></script>
+}
+<script>
+    //所有用户自定义的JS函数建议都放在这里
+
+</script>
+<script>
+
+    /*
+     按钮单击,用于调用Js函数中btnEdit_Click
+    (AutoGCLib.WA_ViewScript_Edit_TS4Html:Gen_WApi_JS_btnEdit_Click)
+    */
+    function btnEdit_Click(strCommandName, strKeyId) {
+        require(["../js/Knowledges/ge_StructureGraph_Edit_2Ex.js"], function (ge_structuregraph) {
+            ge_structuregraph.ge_StructureGraph_Edit_2Ex.btnEdit_Click(strCommandName, strKeyId);
+        });
+    }
+
+    /*
+     显示对话框
+    (AutoGCLib.WA_ViewScript_Edit_TS4Html:Gen_WApi_JS_ShowDialog)
+    */
+    function ShowDialog(strDialogName) {
+        require(['jquery', 'bootstrap'], function ($) {
+            $(strDialogName).modal('show');
+        });
+    }
+
+    /*
+     隐藏对话框
+    (AutoGCLib.WA_ViewScript_Edit_TS4Html:Gen_WApi_JS_HideDialog)
+    */
+    function HideDialog(strDialogName) {
+        require(['jquery', 'bootstrap'], function ($) {
+            $(strDialogName).modal('hide');
+        });
+    }
+</script>
+<div id="tabLayout" class="tab_layout">
+    @*-- 编辑层 --*@
+
+    <div class="modal fade" id="divEditDialog_ge_StructureGraph" tabindex="-1" role="dialog" aria-labelledby="lblDialogTitle_ge_StructureGraph" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="width: 635px;">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="lblDialogTitle_ge_StructureGraph">模态框（Modal）标题</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <table id="tabEdit" style="width:600px" class="table table-bordered table-hover table td table-sm">
+                        <tr id="trStructureGraphName">
+                            <td class="text-right">
+                                <Label id="lblStructureGraphName" name="lblStructureGraphName" class="col-form-label text-right" style="width:90px;">
+                                    知识点图名
+                                </Label>
+                            </td>
+                            <td class="text-left" ColSpan=3>
+                                <input id="txtStructureGraphName" name="txtStructureGraphName" class="form-control-sm" style="width:350px;" />
+                            </td>
+                        </tr>
+                        <tr id="trSectionTypeId">
+                            <td class="text-right">
+                                <Label id="lblSectionTypeId" name="lblSectionTypeId" class="col-form-label text-right" style="width:90px;">
+                                    节点类型
+                                </Label>
+                            </td>
+                            <td class="text-left" ColSpan=3>
+                                <select id="ddlSectionTypeId" name="ddlSectionTypeId" class="form-control-sm" style="width:150px;"></select>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button id="btnCancel_ge_StructureGraph" type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button id="btnSubmit_ge_StructureGraph" type="button" class="btn btn-primary" onclick="btnEdit_Click('Submit')">添加</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal -->
+    </div>
+</div>

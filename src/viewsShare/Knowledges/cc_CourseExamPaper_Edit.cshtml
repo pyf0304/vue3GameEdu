@@ -1,0 +1,197 @@
+﻿
+@page
+@{
+Layout = "";
+}
+@section Styles{
+    <link rel="stylesheet" href="../lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="../css/site.css" />
+}
+@section Scripts{
+    <script src="../lib/jquery/dist/jquery.js"></script>
+    <script src="../lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="../js/site.js" asp-append-version="true"></script>
+    <script src="../lib/bootstrap/dist/js/popper.js"></script>
+    <script src="../lib/require/require.js" data-main="../js/src/config"></script>
+}
+<script>
+//所有用户自定义的JS函数建议都放在这里
+
+
+</script>
+     <script>    
+
+ /*
+  按钮单击,用于调用Js函数中btnEdit_Click
+ (AutoGCLib.WA_ViewScript_Edit_TS4Html:Gen_WApi_JS_btnEdit_Click)
+ */
+function btnEdit_Click(strCommandName, strKeyId) {
+   require(["../js/Knowledges/cc_CourseExamPaper_EditEx.js"], function(cc_courseexampaper) {
+cc_courseexampaper.cc_CourseExamPaper_EditEx.btnEdit_Click(strCommandName, strKeyId);
+});
+}
+
+ /*
+  显示对话框
+ (AutoGCLib.WA_ViewScript_Edit_TS4Html:Gen_WApi_JS_ShowDialog)
+ */
+function ShowDialog(strDialogName) {
+   require(['jquery', 'bootstrap'], function($) {
+ $(strDialogName).modal('show');
+  });
+}
+
+ /*
+  隐藏对话框
+ (AutoGCLib.WA_ViewScript_Edit_TS4Html:Gen_WApi_JS_HideDialog)
+ */
+function HideDialog(strDialogName) {
+  require(['jquery', 'bootstrap'], function($) {
+      $(strDialogName).modal('hide');
+  });
+}
+    </script>
+<div id = "tabLayout" class = "tab_layout" 
+>
+@*-- 编辑层 --*@
+
+ <div class="modal fade" id="divEditDialog_cc_CourseExamPaper" tabindex="-1" role="dialog" aria-labelledby="lblDialogTitle_cc_CourseExamPaper" aria-hidden="true">
+ <div class="modal-dialog">
+ <div class="modal-content" style="width: 635px;">
+ <div class="modal-header">
+ <h4 class="modal-title" id="lblDialogTitle_cc_CourseExamPaper">模态框（Modal）标题</h4>
+ <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+ </div>
+ <div class="modal-body">
+<table id="tabEdit" style="width:600px" class="table table-bordered table-hover table td table-sm">
+<tr id="trIsShow">
+<td class="text-right">
+<Label id="lblExamPaperName" name="lblExamPaperName" class="col-form-label text-right" style="width:90px;">考卷名称
+</Label>
+</td>
+<td class="text-left">
+<input  id="txtExamPaperName" name="txtExamPaperName" class="form-control" style="width:150px;"/>
+</td>
+<td class="text-left" ColSpan=2>
+<span class="form-control"  style="width:150px;">
+<input type="checkbox"  id="chkIsShow" name="chkIsShow"Text = "是否启用"  ><label for="chkIsShow">是否启用</label></span>
+</td>
+</tr>
+<tr id="trCourseChapterId">
+<td class="text-right">
+<Label id="lblCourseId" name="lblCourseId" class="col-form-label text-right" style="width:90px;">课程Id
+</Label>
+</td>
+<td class="text-left">
+<select id="ddlCourseId" name="ddlCourseId" class="form-control" style="width:150px;"></select>
+</td>
+<td class="text-right">
+<Label id="lblCourseChapterId" name="lblCourseChapterId" class="col-form-label text-right" style="width:90px;">课程章节
+</Label>
+</td>
+<td class="text-left">
+<select id="ddlCourseChapterId" name="ddlCourseChapterId" class="form-control" style="width:150px;"></select>
+</td>
+</tr>
+<tr id="trExamPaperTypeId">
+<td class="text-right">
+<Label id="lblPaperIndex" name="lblPaperIndex" class="col-form-label text-right" style="width:90px;">试卷序号
+</Label>
+</td>
+<td class="text-left">
+<input  id="txtPaperIndex" name="txtPaperIndex" class="form-control" style="width:150px;"/>
+</td>
+<td class="text-right">
+<Label id="lblExamPaperTypeId" name="lblExamPaperTypeId" class="col-form-label text-right" style="width:90px;">试卷类型
+</Label>
+</td>
+<td class="text-left">
+<select id="ddlExamPaperTypeId" name="ddlExamPaperTypeId" class="form-control" style="width:150px;"></select>
+</td>
+</tr>
+<tr id="trid_XzMajor">
+<td class="text-right">
+<Label id="lblPaperTime" name="lblPaperTime" class="col-form-label text-right" style="width:90px;">考试时间（分钟）
+</Label>
+</td>
+<td class="text-left">
+<input  id="txtPaperTime" name="txtPaperTime" class="form-control" style="width:150px;"/>
+</td>
+<td class="text-right">
+<Label id="lblid_XzMajor" name="lblid_XzMajor" class="col-form-label text-right" style="width:90px;">专业
+</Label>
+</td>
+<td class="text-left">
+<select id="ddlid_XzMajor" name="ddlid_XzMajor" class="form-control" style="width:150px;"></select>
+</td>
+</tr>
+<tr id="trExamCreateTime">
+<td class="text-right">
+<Label id="lblPaperDispModeId" name="lblPaperDispModeId" class="col-form-label text-right" style="width:90px;">试卷显示模式Id
+</Label>
+</td>
+<td class="text-left">
+<select id="ddlPaperDispModeId" name="ddlPaperDispModeId" class="form-control" style="width:150px;"></select>
+</td>
+<td class="text-right">
+<Label id="lblExamCreateTime" name="lblExamCreateTime" class="col-form-label text-right" style="width:90px;">考卷建立时间
+</Label>
+</td>
+<td class="text-left">
+<input  id="txtExamCreateTime" name="txtExamCreateTime" class="form-control" style="width:150px;"/>
+</td>
+</tr>
+<tr id="trIsOpenToAllStu">
+<td class="text-right">
+<Label id="lblCreateUserID" name="lblCreateUserID" class="col-form-label text-right" style="width:90px;">建立用户ID
+</Label>
+</td>
+<td class="text-left">
+<input  id="txtCreateUserID" name="txtCreateUserID" class="form-control" style="width:150px;"/>
+</td>
+<td class="text-left" ColSpan=2>
+<span class="form-control"  style="width:150px;">
+<input type="checkbox"  id="chkIsOpenToAllStu" name="chkIsOpenToAllStu"Text = "全校师生"  ><label for="chkIsOpenToAllStu">全校师生</label></span>
+</td>
+</tr>
+<tr id="trIsOpenToSocial">
+<td class="text-left" ColSpan=2>
+<span class="form-control"  style="width:150px;">
+<input type="checkbox"  id="chkIsOpenToSchool" name="chkIsOpenToSchool"Text = "全校师生公开"  ><label for="chkIsOpenToSchool">全校师生公开</label></span>
+</td>
+<td class="text-left" ColSpan=2>
+<span class="form-control"  style="width:150px;">
+<input type="checkbox"  id="chkIsOpenToSocial" name="chkIsOpenToSocial"Text = "社会公众"  ><label for="chkIsOpenToSocial">社会公众</label></span>
+</td>
+</tr>
+<tr id="trIsCanMultiDo">
+<td class="text-left" ColSpan=2>
+<span class="form-control"  style="width:150px;">
+<input type="checkbox"  id="chkIsAutoGeneQuestion" name="chkIsAutoGeneQuestion"Text = "是否自动生成题目"  ><label for="chkIsAutoGeneQuestion">是否自动生成题目</label></span>
+</td>
+<td class="text-left" ColSpan=2>
+<span class="form-control"  style="width:150px;">
+<input type="checkbox"  id="chkIsCanMultiDo" name="chkIsCanMultiDo"Text = "是否可以做多次"  ><label for="chkIsCanMultiDo">是否可以做多次</label></span>
+</td>
+</tr>
+<tr id="trMemo">
+<td class="text-right">
+<Label id="lblMemo" name="lblMemo" class="col-form-label text-right" style="width:90px;">备注
+</Label>
+</td>
+<td class="text-left" ColSpan=3>
+<input  id="txtMemo" name="txtMemo" class="form-control" style="width:350px;"/>
+</td>
+</tr>
+</table>
+ </div>
+ <div class="modal-footer">
+ <button  id="btnCancel_cc_CourseExamPaper" type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+ <button  id="btnSubmit_cc_CourseExamPaper" type="button" class="btn btn-primary" onclick="btnEdit_Click('Submit')">添加</button>
+ </div>
+ </div>
+ <!-- /.modal-content -->
+ </div>
+ <!-- /.modal -->
+ </div>
+</div>

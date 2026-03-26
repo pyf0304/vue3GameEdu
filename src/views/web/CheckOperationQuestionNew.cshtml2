@@ -1,0 +1,827 @@
+﻿@page
+@{
+    Layout = "~/Pages/Shared/_Layout_Game.cshtml";
+    ViewData["Title"] = "操作类型题目检查";
+}
+
+
+@section Styles{
+
+    <script type="text/javascript" src="../lib/jquery-1.6.min.js"></script>
+    <!-- 导出wordjs-->
+    <script src="~/lib/FileSaver.js"></script>
+    <script src="~/lib/jquery.wordexport.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="~/css/index/css/index.css" />
+    @*<link rel="stylesheet" type="text/css" href="~/css/index/css/slider.css" />*@
+    <link rel="stylesheet" href="~/lib/Xadmin/css/font.css">
+    <link rel="stylesheet" href="~/lib/Xadmin/css/xadmin.css">
+    <link rel="stylesheet" href="~/css/comment.css">
+    <style>
+        .box1 {
+            padding: 3px 10px 10px 10px;
+            background-color: white;
+            border-left: solid 1px #dbdcde;
+            border-right: solid 1px #dededf;
+            border-bottom: solid 1px #dbdcde;
+            border-radius: 7px 4px 4px 2px;
+            margin-bottom: 10px;
+            background-color: white;
+        }
+
+        .alert {
+            position: relative;
+            padding: 0.55rem 1.25rem;
+            margin-bottom: 0.5rem;
+            border: 1px solid transparent;
+            border-radius: 0.25rem;
+            font-size: 16px;
+        }
+
+        .carousel-inner img {
+            width: 1000px;
+            height: 300px;
+        }
+
+        .slider {
+            width: 100%;
+            min-width: 1000px;
+            height: 305px;
+            position: relative;
+            overflow: hidden;
+            /*background: #fff;*/
+            text-align: center;
+        }
+
+        #demo {
+            width: 1000px;
+            height: 305px;
+            margin: 0 auto;
+            /*margin-top: 2px;*/
+            /*top: 10px;*/
+        }
+
+        .nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+            color: red;
+            background-color: #fff;
+            border-color: #dee2e6 #dee2e6 #fff;
+            font-weight: bold;
+            font-size: 15px;
+        }
+    </style>
+
+    <style>
+        .mask {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            filter: alpha(opacity=0);
+            opacity: 0;
+            background: #ffffff
+        }
+    </style>
+
+    <style type="text/css">
+        BODY {
+            BACKGROUND: #fff;
+            FONT: 76%/1.5 Arial,sans-serif;
+            COLOR: #333
+        }
+
+        input {
+            width: 200px;
+            border: 1px solid #86B9D6;
+        }
+
+        #reg_div {
+            color: #154BA0;
+            border: 1px solid #86B9D6;
+            background: #D9EEF9;
+            position: absolute;
+            z-index: 30;
+            height: 180px;
+            width: 400px;
+        }
+
+        .city {
+            width: 80px;
+            float: left;
+            padding: 8px;
+            text-align: center;
+        }
+
+        .ps_div {
+            padding: 10px 10px 2px 10px;
+            border-bottom: 1px dotted #ccc;
+        }
+    </style>
+
+
+
+}
+
+
+
+@section Scripts{
+
+    <script src="~/lib/Xadmin/lib/layui/layui.js" charset="utf-8"></script>
+    <script src="~/lib/Xadmin/js/xadmin.js" type="text/javascript"></script>
+
+
+}
+
+    <script>
+    jQuery(document).ready(function ($) {
+
+        var btn = document.getElementById('btn')
+        var Preview = $("#QuestionDetail").attr("id")
+        if (!!window.ActiveXObject || "ActiveXObject" in window) {
+
+            $("#btnExportWord").onclick = function () {
+                var Preview = $("#QuestionDetail").attr("id")
+                //AllAreaWordTwo(document.getElementById('test'), '^')
+                AllAreaWordTwo(Preview, '^')
+            }
+        } else {
+            $("#btnExportWord").click(function () {
+
+
+                $("#QuestionDetail").show();//显示为了导出
+                $("#QuestionDetail").wordExport("题目信息");
+
+                $("#QuestionDetail").hide();//导出后隐藏；
+
+            });
+
+        }
+    });
+
+    //  {Object} cont  要导出的html元素内容的id,注意不要加双引号@param {Object} key   分页关键字
+    function AllAreaWordTwo(cont, key) {
+
+
+
+        var oWD = new ActiveXObject("Word.Application");
+        //默认为页面视图
+        var oDC = oWD.Documents.Add("", 0, 0);
+        var oRange = oDC.Range(0, 1);
+        //var oRange1 = oDC.Range(0,2);
+        var sel = document.body.createTextRange();
+        //参数为html元素id
+        sel.moveToElementText(cont);
+        sel.select();
+        sel.execCommand("Copy");
+        oRange.Paste();
+        oWD.Application.Visible = true;
+        //得到打开后word的selection对象
+        var selection = oWD.Selection;
+        //设置字体大小
+        selection.Font.Size = 10;
+        //ctrl+A 全选操作
+        selection.WholeStory();
+        //清除格式
+        selection.Find.ClearFormatting();
+        //指定查找关键字
+        selection.Find.Text = key;
+        //^m为手动分页符标记
+        //向下查找
+        selection.Find.Forward = true;
+        selection.Find.Wrap = 1;
+        //不区分大小写
+        selection.Find.MatchCase = false;
+        //不匹配整个单词
+        selection.Find.MatchWholeWord = false;
+        //如果找到指定字符串返回真,否则返回false
+        while (selection.Find.Execute()) {
+            //插入分页符,分页符常量为7,具体可查word api
+            selection.InsertBreak(7);
+        }
+    }
+
+
+    function rgb2hex(rgb) {
+        rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+
+        function hex(x) {
+
+            return ("0" + parseInt(x).toString(16)).slice(-2);
+
+        }
+
+        return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
+    }
+
+
+
+    function GetRequest() {
+        var url = location.search; //获取url中"?"符后的字串
+        var theRequest = new Object();
+        if (url.indexOf("?") != -1) {
+            var str = url.substr(1);
+            strs = str.split("&");
+            for (var i = 0; i < strs.length; i++) {
+                theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+            }
+        }
+        return theRequest;
+    }
+    function GetQuestionID() {
+        var Request = new Object();
+        Request = GetRequest();
+        //var strQuestionId = Request['questionID'];
+        ////传递的问题Id
+        //$('#hidQuestionID').val(strQuestionId);
+
+        //var strDifficultyLevelId = Request['strDifficultyLevelId'];
+        //var strQuestionTypeId = Request['strQuestionTypeId'];
+        //var strQuestionNum = Request['strQuestionNum'];
+        var strGameLevelId = Request['strGameLevelId'];
+
+
+        //$('#hidDifficultyLevelId').val(strDifficultyLevelId);
+        // $('#hidQuestionTypeId').val(strQuestionTypeId);
+        // $('#hidQuestionNum').val(strQuestionNum);
+        $('#hidGameLevelId').val(strGameLevelId);
+
+
+
+    }
+
+
+    window.onload = function () {
+
+        //传递临时ID；
+        GetQuestionID();
+        require(["../js/Web/CheckOperationQuestion.js"], function (index) {
+            $('#indexTitle').html("操作题目");
+            var objPage = new index.CheckOperationQuestion();
+            objPage.Page_Load();
+
+        });
+
+        //首次加载时候，检查按钮是置灰
+        $('#Checkrundata').attr("disabled", "disabled");
+        //首次加载时候，提交按钮是置灰
+        $('#QuestionSubmit').attr("disabled", "disabled");
+
+
+        var iframe = document.getElementById("iframeResult").contentWindow.document.body.innerText = "";
+        iframe = document.getElementById('iframeResult').contentDocument.write("<div id='Test'></div>");
+    }
+
+
+
+    function ShowHtmlcode() {
+        var iframe = document.getElementById("iframeResult").contentWindow.document.body.innerText = "";
+        iframe = document.getElementById('iframeResult').contentDocument.write("<div id='Test'></div>");
+        //判断题目是否有自带的html代码，如果有则把它存放到js文本框，用于后期操作；
+        if ($("#ContentHtmlCode").val() != "") {
+            // alert($("#ContentHtmlCode").val());
+            //将输入框内的数据传给iframe
+            //var iframe = document.getElementById("iframeResult").contentWindow.document.body.innerText = "";
+            //var obj = window.frames["iframeResult"];
+            //obj.document.body.innerHTML = "<div id='Test' style='display:none;'>" + $("#ContentHtmlCode").val() + "</div>";
+
+            // var htmlCode = "<div id='Test' style='display:none;'>" + $("#ContentHtmlCode").val() + "</div>";
+            var text = document.getElementById('ContentHtmlCode').value;
+
+            iframe = document.getElementById('iframeResult').contentDocument.write(text);
+        }
+    }
+
+
+    //运行文本域内容按钮
+    function rundata() {
+        //获取输入框内的数据
+        var text = document.getElementById('textareaCode').value;
+        // 先清空iframe
+        var iframe = document.getElementById("iframeResult").contentWindow.document.body.innerText = "";
+
+        //var content = document.getElementById("ContentHtmlCode");
+
+        //  alert(text);
+        if (text == "") {
+            alert("请编写指定要求代码再运行！");
+        }
+        else {
+            //判断题目是否有自带的html代码，如果有则把它存放到js文本框，用于后期操作；
+            if ($("#ContentHtmlCode").val() != "") {
+                //    alert($("#ContentHtmlCode").val());
+                //将输入框内的数据传给iframe
+                var iframe = document.getElementById("iframeResult").contentWindow.document.body.innerText = "";
+                // var obj = window.frames["iframeResult"];
+                //  obj.document.body.innerHTML = "<div id='Test'>" + $("#ContentHtmlCode").val() + "</div>";
+
+                var texthtml = document.getElementById('ContentHtmlCode').value;
+
+                iframe = document.getElementById('iframeResult').contentDocument.write(texthtml);
+            }
+
+
+            //将输入框内的数据传给iframe
+            iframe = document.getElementById('iframeResult').contentDocument.write(text);
+
+            //首次运行加载时候，检查提交按钮去掉置灰
+            $('#Checkrundata').attr("disabled", false);
+
+            //获取用户编辑代码和源代码 然后组合替换更新到操作代码中；
+            //提供源代码 ContentHtmlCode
+            var strContentHtmlCode = $("#ContentHtmlCode").val();
+  
+            var strNewText = "<head>" + text;
+            //用户自己编写代码
+            var str = strContentHtmlCode;
+            var pattern = "<head>";
+            var Newstr = str.replace(pattern, strNewText);
+            //用户操作后的组合代码  ContentCode
+            $("#ContentCode").val(Newstr);
+            console.log(Newstr);
+
+
+
+
+            //清空2个提示label标签；
+            $("#lblmsgtext").html("");
+            $("#lblmsgResult").html("");
+        }
+
+
+
+    }
+
+
+    //检查事件得到子iframe框架控件属性值；
+    function Checkrundata() {
+
+        $("#tabwucScore").empty();
+
+        require(["../js/Web/CheckOperationQuestion.js"], function (index) {
+
+            var objPage = new index.CheckOperationQuestion();
+            objPage.Checkrundata();
+        });
+
+
+        ////判断如果获取的指定控件下的值长度小于o说明没有作答；
+        ////$("#" + id).find("input[name=item]").attr("id");
+        ////if ($("#iframeResult").contents().find("input").length < 0) {
+        //if ($("#iframeResult").contents().find("body").html.length < 0) {
+
+        //    alert("请先点击运行窗口按钮");
+        //}
+        //else {
+
+        //    //判断题目类型
+        //    var strQuestionTypeId = $('#hidQuestionTypeId').val();
+        //    if (strQuestionTypeId == "16") {
+
+        //        //算法题
+
+        //        require(["../js/Web/CheckOperationQuestion.js"], function (index) {
+
+        //            var objPage = new index.CheckOperationQuestion();
+        //            objPage.AlgorithmQuestionCheck();
+        //        });
+
+        //    }
+        //    else {
+        //        //判断隐藏
+        //        var ControlId = $("#hidControlID").val();//此ID是数据库中需要操作的标准ID
+
+        //        // //测试指定控件，指定ID是否存在；
+        //        // var strinput = "input";
+        //        // var testId = $("#iframeResult").contents().find(strinput + "[id='" + ControlId + "']").attr("id");
+        //        ////var testId = $("#iframeResult").contents().find("input[id='" + ControlId + "'").attr("id");
+        //        //alert(testId);
+
+        //        var strid = $("#iframeResult").contents().find("#" + ControlId).attr("id");
+        //        var strclass = $("#iframeResult").contents().find("#" + ControlId).attr("class");
+        //        var strvalue = $("#iframeResult").contents().find("#" + ControlId).val();
+
+        //        //根据检查类型来判断 是隐藏还是删除；0001显示,0002隐藏 0003删除；
+        //        var ExaminationTypeId = $("#hidExaminationTypeId").val();
+        //        var strResultType;
+        //        if (ExaminationTypeId == "0001") {
+
+        //            strResultType = "";
+        //        }
+        //        else if (ExaminationTypeId == "0002") {
+
+
+        //            //获取iframe中的控件属性；
+        //            //var strid = $("#iframeResult").contents().find("#" + ControlId).attr("id");
+        //            //   var strid = $("#iframeResult").contents().find("#" + ControlId).attr("id");
+        //            //if (document.getElementById("" + ControlId).style.display == "none") {
+        //            if ($("#iframeResult").contents().find("#" + ControlId).is(":hidden")) {
+        //                strResultType = "1";
+        //            }
+        //            else {
+        //                strResultType = "2";
+        //            }
+        //        }
+        //        else if (ExaminationTypeId == "0003") {
+        //            //判断删除；0003
+        //            if ($("#iframeResult").contents().find("#" + ControlId).size() > 0) {
+        //                //说明存在 ，没有删除
+        //                strResultType = "2";
+        //            }
+        //            else {
+        //                strResultType = "1";
+        //            }
+
+        //        }
+        //        else {
+        //            strResultType = "";
+        //        }
+
+        //        require(["../js/Web/CheckOperationQuestion.js"], function (index) {
+
+        //            var objPage = new index.CheckOperationQuestion();
+        //            objPage.CheckAttributeSubmitClick(strid, strclass, strvalue, strResultType);
+        //        });
+        //    }
+
+
+
+        //}
+
+        ////点击检查加载时候，提交按钮去掉置灰
+        //$('#QuestionSubmit').attr("disabled", false);
+
+        //// alert(strid + strclass + strvalue);
+    }
+
+
+    //提交事件
+    function QuestionSubmitClick() {
+        //判断题目类型 16算法题；
+        var strQuestionTypeId = $('#hidQuestionTypeId').val();
+        //if (strQuestionTypeId == "16") {
+
+        //    require(["../js/Web/CheckOperationQuestion.js"], function (index) {
+
+        //        var objPage = new index.CheckOperationQuestion();
+        //        objPage.SuanfaSubmitClick();
+        //    });
+        //}
+        //else {
+        //    //操作题；
+            require(["../js/Web/CheckOperationQuestion.js"], function (index) {
+
+                var objPage = new index.CheckOperationQuestion();
+                objPage.SubmitClick();
+            });
+
+
+
+       // }
+
+
+
+
+
+        //提交事件完成后，运行、检查、提交 按钮置灰
+        $('#Checkrundata').attr("disabled", true);
+        $('#QuestionSubmit').attr("disabled", true);
+        $('#submitBTN').attr("disabled", true);
+
+        //显示提示；
+        $('#btnMsg').attr("disabled", false);
+
+    }
+
+
+
+
+    //全部问题提交 ，提交后不可再操作；
+    function QuestionAllSubmitClick() {
+        //判断题目类型 16算法题；
+        var strQuestionTypeId = $('#hidQuestionTypeId').val();
+
+
+       // var strMsg = clsString.Format("你确定要提交吗?,提交后不可作答未答题目！");
+
+        var gnl = confirm("你确定要提交吗?,提交后不可作答未答题目！");
+        if (gnl == true) {
+
+            require(["../js/Web/CheckOperationQuestion.js"], function (index) {
+
+                var objPage = new index.CheckOperationQuestion();
+                objPage.SubmitAllClick();
+            });
+
+            //提交事件完成后，检查、按钮置灰
+            $('#Checkrundata').attr("disabled", true);
+            //提交
+            $('#QuestionSubmit').attr("disabled", true);
+            //运行
+            $('#submitBTN').attr("disabled", true);
+
+            //显示提示；
+            $('#btnMsg').attr("disabled", false);
+        }
+        else {
+            return false;
+        }
+
+
+    }
+
+
+
+
+
+    //信息提示
+
+    function ShowMsgClick(id) {
+
+
+        e = oo(id)
+        var et = e.offsetTop;
+        var el = e.offsetLeft;
+        while (e = e.offsetParent) {
+            et += e.offsetTop;
+            el += e.offsetLeft;
+        }
+
+        oo("reg_div").style.left = (el) + "px";
+        oo("reg_div").style.top = (et + 20) + "px";
+        oo("reg_div").style.display = '';
+
+        //    if (document.activeElement.id != "input_01") {
+        //        //    alert("dd")
+        //        oo(reg_div).style.display = 'none';
+        //    }
+
+        //window.document.onclick = Object_Onclick;
+
+        require(["../js/Web/CheckOperationQuestion.js"], function (index) {
+
+            var objPage = new index.CheckOperationQuestion();
+            objPage.ShowMsgClick();
+        });
+
+
+    }
+
+    //分页事件
+    function Page_Click(strKey) {
+
+        $("#hidCurrPageIndex").val(strKey);
+        //$("#navGraphName").html(strName);
+        //先清除背景色
+        $("#page_list button").removeClass();
+        $("#page_list button").addClass("btn btn-outline-primary");
+
+        //添加背景色
+        strKey = "page_" + strKey;
+        $("#" + strKey).removeClass();
+        $("#" + strKey).addClass("btn btn-primary");
+
+        //点击分页按钮时候 清空源代码页面控件值
+        $("#ContentHtmlCode").val("");
+        //清空编辑代码的页面值
+        $("#textareaCode").val("");
+        //清空frame框架内容
+        var iframe = document.getElementById("iframeResult").contentWindow.document.body.innerText = "";
+
+        require(["../js/Web/CheckOperationQuestion.js"], function (index) {
+            var objPage = new index.CheckOperationQuestion();
+            objPage.ShowStructureChartQuestion();
+        });
+    }
+    function ShowPageList() {
+        var RecCount = GetInputValueInDivObjN(this.thisDivList, 'hidRecCount');
+        for (var i = 1; i < RecCount + 1; i++) {
+            var button = document.createElement("button");
+            //div.innerText = strTagsContent;
+            //div.href = "#Q" + strQuestionsId;
+            button.className = "btn btn-outline-primary";
+            //button.style.position = "absolute";
+            //button.style.zIndex = "999";
+            //button.title = strQuestionsContent;
+            button.id = "page_" + i;
+            button.type = "button";
+            button.innerHTML = "" + i + "";
+            //div.className = "layui-icon layui-icon-survey";//答疑图标
+            //if (arrqa_QuestionsObjLst[i].UpdUser == strUserId) {
+            //    div.setAttribute("onclick", "btnUpdateQuestions_Click('" + strQuestionsId + "')");
+            //}
+            button.setAttribute("onclick", "Page_Click(" + i + ")");
+            var page_list = document.getElementById("page_list");
+            page_list.appendChild(button);
+        }
+
+    }
+    </script>
+<script>
+
+    function oo(obj) {
+        return typeof (obj) == "string" ? document.getElementById(obj) : obj
+    }
+
+    function allt(id) {
+
+        e = oo(id)
+        var et = e.offsetTop;
+        var el = e.offsetLeft;
+        while (e = e.offsetParent) {
+            et += e.offsetTop;
+            el += e.offsetLeft;
+        }
+
+        oo("reg_div").style.left = (el) + "px";
+        oo("reg_div").style.top = (et + 20) + "px";
+        oo("reg_div").style.display = '';
+        //                oo("reg_div2").innerHTML=id;    //    添加提示信息(根据id判断)
+
+        //     oo("reg_div").style.display='none';
+
+    }
+    function bllt(id) {
+
+        // oo("input_01").value=oo(id).innerHTML
+        oo("reg_div").style.display = 'none';
+    }
+
+    //执行函数作为变量的js函数方法；
+    function BtnFuncton(Func) {
+        //Func(value)
+        // eval(Func);
+        //  eval('($("#iframeResult").contents().Func)');
+        eval(Func);
+    }
+
+
+
+</script>
+
+<!-- 网页内容信息 -->
+<div class="content">
+    <div class="box1">
+        <div class="title" style="height:45px;line-height:30px;padding-bottom:55px;">
+            <div style="width:40%;float:left;margin-top:0px;height:30px;line-height:30px;">
+                <nav class="breadcrumb">
+                    <a class="breadcrumb-item" href="Index">首页</a>
+                    <a class="breadcrumb-item" href="PassGame">冲关游戏</a>
+                    @*<span id="navTitle" class="breadcrumb-item active">操作习题</span>*@
+                    <span id="LevelName" class="breadcrumb-item active"></span>
+                    <span id="btnQuestonExport" class="breadcrumb-item active">
+                        <button class="btn btn-outline-info text-nowrap" id="btnExportWord" name="btnExportWord" title="导出数据">导出数据</button>
+                    </span>
+                </nav>
+            </div>
+            <div style="width:60%;margin-top:0px;height:30px;line-height:30px;float:right;">
+
+                <div id="page_list" style="float:right; width:100%;text-align:right; padding-right:5px;margin-top:0px;">
+                    题目：
+
+                </div>
+
+            </div>
+        </div>
+
+        <div class="alert alert-success" style="min-height:310px;">
+            <div style="float:left;width:49%;height:300px;overflow:auto">
+                @*<strong>题目：</strong> 题目内容。*@
+                <label id="ContentHtmlText" style="font-size:16px; float:left;color:dodgerblue;"></label>
+            </div>
+            <div style="float:right;width:50%;" id="Oldcode">
+                @*<div style="float:left;width:100%;"><strong>题目源代码：</strong></div>*@
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#Score1">题目源代码</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#Score2">操作代码</a>
+                    </li>
+
+                </ul>
+
+                <div class="tab-content">
+                    <div id="Score1" class="tab-pane active" style="float:left;width:100%;height:265px;">
+
+                        <pre>
+                        <textarea id="ContentHtmlCode" rows="12" cols="88" style="background-color:lightgray;margin-top:-25px;" disabled="disabled"></textarea>
+                        </pre>
+                    </div>
+
+                    <div id="Score2" class="tab-pane fade">
+                        <pre>
+                        <textarea id="ContentCode" rows="12" cols="88" style="background-color:lightgray;margin-top:-25px;" disabled="disabled"></textarea>
+                        </pre>
+                    </div>
+                 </div>
+             </div>
+
+         </div>
+        <div style="width:100%;">
+            <div style="width:50%;float:left;">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <button type="button" class="btn btn-default">源代码 <small></small>：</button>
+                            </div>
+                            <div class="col-xs-6 text-right">
+                                <button type="button" class="btn btn-success" id="submitBTN" onclick="rundata()" title="点击后可以去操作代码tab中查看组合代码">
+                                    测试运行
+                                </button>
+                                &nbsp;&nbsp;&nbsp;
+                                <button id="Checkrundata" onclick="Checkrundata()" class="btn btn-success">检查</button>
+
+                                &nbsp;&nbsp;&nbsp;
+                                <button id="QuestionSubmit" onclick="QuestionSubmitClick()" class="btn btn-success">提交</button>
+                            </div>
+                            <div class="col-xs-6 text-right"><label id="lblmsgtext" style="margin-left:20px;float:right;color:red;"></label></div>
+                        </div>
+
+                    </div>
+                    <div class="panel-body" style="height:365px;">
+                        @*<textarea class="form-control" id="textareaCode" name="textareaCode" style="display: none; width:100%;height:665px;"></textarea>*@
+                        <textarea id="textareaCode" name="textareaCode" placeholder="编辑代码" class="layui-input" style="width:100%; height:365px;"></textarea>
+
+                    </div>
+                </div>
+            </div>
+
+            <div style="width:50%;float:right;">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        @*<form class="form-inline">*@
+                        <button type="button" class="btn btn-default">运行结果</button>
+                        <button id="btnMsg" type="button" class="btn btn-success" onclick="ShowMsgClick(this)" style="display:none;">帮助</button>
+                        <div id="reg_div" style="left: 8px; top: 28px;display:none;">
+                            <div class="ps_div"><span style="float:right;" onclick="oo('reg_div').style.display='none'">关闭</span>代码提示:</div>
+                            <div id="">
+                                <pre>
+                                <textarea id="DivMsg" name="textareaCode" placeholder="编辑代码" class="layui-input" style="width:100%; height:105px;"></textarea>
+                                    </pre>
+                            </div>
+                        </div>
+
+                        <button id="QuestionAllSubmit" onclick="QuestionAllSubmitClick()" class="btn btn-success" style="float:right;">全部提交</button>
+                        @*</form>*@
+                    </div>
+                    <div class="panel-body">
+                        <div id="iframewrapper" style="height:50%; width:100%;">
+                            <iframe frameborder="0" id="iframeResult" style="min-height: 200px;width:98%;"></iframe>
+                        </div>
+
+                        <div style="height:49%;width:100%;height:160px;overflow:auto;">
+                            <label id="lblmsgResult" style="margin-left:20px;float:left;color:red;"></label>
+                            @*<table id="tabwucScore" name="tabwucScore" style="width: 100%; width: 100%;border-collapse:separate; border-spacing:0px 5px;" class="table table-bordered table-hover table td"></table>*@
+                            <table id="tabwucScore" name="tabwucScore" style="width: 100%; width: 100%;border-collapse:separate; border-spacing:0px 5px;" ></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- 导出题目信息； -->
+    <div id="QuestionDetail" class="div_List" style="display:none;">
+
+
+    </div>
+</div>
+
+
+<!-- 存放标准表主键； -->
+<input id="hidCriteriaId" type="hidden" />
+<!-- 存放标准检查类型； -->
+<input id="hidExaminationTypeId" type="hidden" />
+<!-- 存放闯关批次； -->
+<input id="hidExamBatchNo" type="hidden" />
+<!-- 存放题目ID； -->
+<input id="hidQuestionID" type="hidden" />
+
+<!-- 存放控件ID； -->
+<input id="hidControlID" type="hidden" />'
+
+<!-- 存放控件类型ID； -->
+<input id="hidControlTypeID" type="hidden" />'
+
+<!-- 存放题目数； -->
+<input id="hidarrQuestionID" type="hidden" />
+<!-- 数据数量； -->
+<input id="hidRecCount" type="hidden" value="0" />
+<!-- 接收传值； -->
+<input id="hidDifficultyLevelId" type="hidden" />
+<input id="hidQuestionTypeId" type="hidden" />
+<input id="hidQuestionNum" type="hidden" />
+<input id="hidGameLevelId" type="hidden" value="" />
+
+<!-- 关卡模式； -->
+<input id="hidLevelModeTypeId" type="hidden" />
+
+
+<!-- 数据分页； -->
+<input id="hidCurrPageIndex" type="hidden" value="1" />
+<input id="hidSortQuestionnaireBy" type="hidden" />
+
+<!-- 算法题检查是否正确； -->
+<input id="hidCheckIsRight" type="hidden" />

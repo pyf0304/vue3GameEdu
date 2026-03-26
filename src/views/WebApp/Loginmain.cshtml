@@ -1,0 +1,106 @@
+﻿@page
+@model GraduateStudyWebApp.Pages.WebApp.LoginmainModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- meta使用viewport以确保页面可自由缩放 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 引入 jQuery Mobile 样式 -->
+    <link rel="stylesheet" href="~/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.css">
+    <!-- 引入 jQuery 库 -->
+    <script src="~/jquery.mobile-1.4.5/jquery-1.11.1.min.js"></script>
+    <!-- 引入 jQuery Mobile 库 -->
+    <script src="~/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.js"></script>
+
+    <script src="../lib/jquery/dist/jquery.js"></script>
+    <script src="../lib/require/require.js" data-main="../js/src/config"></script>
+    <script src="https://pv.sohu.com/cityjson?ie=utf-8"></script>
+    <title>Title</title>
+    <script>
+        var LoginIp = returnCitySN.cip;
+
+         var strUrl_Session_SetString = "@Model.Url_Session_SetString";
+    var strUrl_Session_GetString = "@Model.Url_Session_GetString";
+        var strWebRoot = "@Model.WebRoot";
+
+        function SetSession(Key, Value) {
+
+            $.ajax({
+                url: "/Session/SetString",
+                cache: false,
+                async: false,
+                type: 'get',
+                dataType: "json",
+                data: {
+                    Key: Key,
+                    Value: Value
+                },
+                success: function (data) {
+                    //$('#myValue').val(text);
+                    var strKey = data.key;
+                    var strValue = data.value;
+
+                    $('#myKey').html(strKey);
+                    $('#myValue').html(strValue);
+                    console.log(strKey + strValue);
+
+                }
+
+            });
+        }
+
+        /*
+查询记录
+(AutoGCLib.WA_ViewScript_TS4CSharp:Gen_WApi_JS_btnQuery_Click)
+*/
+        function btnLogin_Click() {
+            require(["../js/WebApp/LoginmainEx.js"], function (users) {
+                $("#Text1").val("进入函数：btnLogin_Click");
+                var objPage = new users.LoginmainEx();
+                objPage.btnQuery_Click();
+            });
+        }
+
+
+    </script>
+</head>
+<body>
+    <!--登陆页面-->
+    <div data-role="page" id="pageLogin">
+        <div data-role="header">
+            <h1 role="heading">研究生学习系统</h1>
+        </div>
+        <div data-role="main" class="ui-content">
+
+            <div style="padding:0px;">
+                <img style="border-radius:10px; width:100%;" src="~/img/bground.png" />
+                <div style="text-align:center; color:red;margin-top:-90px;">
+                    <label for="password">提示:</label>
+                    <p>
+                        内部功能系统,需要先进行登录获取您的信息
+                    </p>
+                </div>
+            </div>
+            <form method="get" action="">
+
+                <div class="ui-field-contain">
+                    
+                    <div style="margin-top: 5%;">
+                        <a href="" rel="external" data-role="button" data-transition="flow" onclick="btnLogin_Click()">我要登录</a>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div data-role="footer" style="text-align: center" data-position="fixed">
+            <p>CopyRight &copy;泰泽教育</p>
+        </div>
+    </div>
+  
+    <input id="hidUserInfo" type="hidden" value="@Model.GetSession("objvUserRoleRelation")" />
+</body>
+</html>

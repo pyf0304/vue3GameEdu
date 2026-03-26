@@ -1,0 +1,32 @@
+﻿<ul class="nav" id="page">
+    <li id="liFirstPage" class="nav-item p-prev disabled">
+        <a id="btnFirstPage" href='javascript:IndexPageFour(1);' class="btn btn-outline-info btn-sm">首 页</a>
+    </li>
+    <li id="liPrevPage" class="nav-item p-prev disabled">
+        <a id="btnPrevPage" href='javascript:PrevPageFour();' class="btn btn-outline-info btn-sm"><i></i>上一页</a>
+    </li>
+    @*<li class="nav-item "><a id="one" href="javascript:void(0);" class="btn btn-outline-info btn-sm">1</a></li>
+    <li class="nav-item "><a id="two" href="javascript:void(0);" class="btn btn-outline-info btn-sm">2</a></li>
+    <li class="nav-item "><a id="three" href="javascript:void(0);" class="btn btn-outline-info btn-sm">3</a></li>
+    <li class="nav-item more"><a id="five" href="javascript:void(0);" class="btn btn-outline-info btn-sm">...</a></li>
+    <li class="nav-item "><a id="fore" href="javascript:void(0);" class="btn btn-outline-info btn-sm">13855</a></li>*@
+
+    <li class='nav-item p-next'>
+        <a id="btnNextPage" href='javascript:NextPageFour();' class="btn btn-outline-info btn-sm">下一页<i></i></a>
+    </li>
+    @*<li id="liLastPage" class='nav-item p-next'>
+        <a id="btnLastPage" href='javascript:void(0);' onclick="IndexPageFour(0);" class="btn btn-outline-info btn-sm">尾 页</a>
+    </li>*@
+    @*<li class="nav-item total">
+        <span id="spnCountPage">
+            2/13855
+        </span>
+    </li>*@
+
+    <li class="nav-item total">
+        <span id="spnNumber">
+            @*共13855页*@ 到第<input type="text" id="input_numberFour" class="page-txtbox" />页
+            <input name="" value="确定" type="button" onclick="JumpToPageFour();" class="btn btn-outline-info btn-sm" />
+        </span>
+    </li>
+</ul>
