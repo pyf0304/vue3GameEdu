@@ -7,18 +7,18 @@
 import { Format, IsNullOrEmpty } from '@/ts/PubFun/clsString';
 
 export class clsSysPara4WebApi {
-  public static bolIsLocalHost = false; //true,,,false
-  public static bolIsLocalHost_GP = false; //true,,,false
+  public static bolIsLocalHost = true; //true,,,false
+  public static bolIsLocalHost_GP = true; //true,,,false
 
   //const CurrIPAddressAndPort = "http://Localhost:2408";
   //    public static CurrIPAddressAndPort:string = getHostAddressweb();// "http://Localhost:2408";
 
-  public static CurrPrx = 'ExamLibWAVue';
+  // public static CurrPrx = 'ExamLibWAVue';
   //  public static CurrPrx = 'ExamLibWA';
-  // public static CurrPrx = '';
+  public static CurrPrx = '';
 
-  public static CurrPrx_GP = 'GpWAJsie';
-  // public static CurrPrx_GP = '';
+  // public static CurrPrx_GP = 'GpWAJsie';
+  public static CurrPrx_GP = '';
 
   public static CurrPrx2 = 'ExamLibApi/Api';
   public static CurrPrx3 = 'ExamLibApi/Api';
@@ -46,12 +46,12 @@ export class clsSysPara4WebApi {
 
   //  public static CurrIPAddressAndPort_Local_GP = 'https://www.sh-tz.com'; // getHostAddressweb();// "http://Localhost:2408";
   // public static CurrIPAddressAndPort_Local_GP = 'http://192.168.1.15:7111'; // getHostAddressweb();// "http://Localhost:2408";
-  public static CurrIPAddressAndPort_Local_GP = 'http://tzar.ddns.net:57111'; // getHostAddressweb();// "http://Localhost:2408";
+  public static CurrIPAddressAndPort_Local_GP = 'http://tzar.ddns.net:27111'; // getHostAddressweb();// "http://Localhost:2408";
 
   //localhost
   // public static CurrIPAddressAndPort_Local = 'http://192.168.1.20:7110'; // getHostAddressweb();// "http://Localhost:2408";
   //  public static CurrIPAddressAndPort_Local = 'http://tzar.ddns.net:57120'; // getHostAddressweb();// "http://Localhost:2408";
-  public static CurrIPAddressAndPort_Local = 'http://tzar.ddns.net:57121'; // getHostAddressweb();// "http://Localhost:2408";
+  public static CurrIPAddressAndPort_Local = 'http://tzar.ddns.net:27110'; // getHostAddressweb();// "http://Localhost:2408";
 
   //public static CurrIPAddressAndPort_Local_GP: string = "http://localhost:49540";// getHostAddressweb();// "http://Localhost:2408";
 
